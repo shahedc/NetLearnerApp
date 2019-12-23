@@ -69,15 +69,15 @@ else
         learningResources = await service.Get();
         StateHasChanged();
     }
-    private void PrepareForEdit(LearningResource cinematicItem)
+    private void PrepareForEdit(LearningResource learningResource)
     {
         customHeader = "Edit Item";
-        learningResourceObject = cinematicItem;
+        learningResourceObject = learningResource;
     }
 
-    private void PrepareForDelete(LearningResource cinematicItem)
+    private void PrepareForDelete(LearningResource learningResource)
     {
-        learningResourceObject = cinematicItem;
+        learningResourceObject = learningResource;
     }
 
     private async Task Delete()
