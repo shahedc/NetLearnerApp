@@ -32,5 +32,15 @@
     </div>
 
     <script src="_framework/blazor.server.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script>
+        function ShowModal(modalId) {
+            $('#' + modalId).modal('show');
+        }
+        function CloseModal(modalId) {
+            $('#' + modalId).modal('hide');
+        }
+    </script>
 </body>
 </html>

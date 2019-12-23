@@ -1,0 +1,68 @@
+﻿@page "/resourcedetail"
+
+@using NetLearner.SharedLib.Data
+@using NetLearner.SharedLib.Models
+@using NetLearner.SharedLib.Services
+@inject ILearningResourceService service
+@inject IJSRuntime jsRuntime
+
+
+
+
+<div class="modal" tabindex="-1" role="dialog" id="taskModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@CustomHeader</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <EditForm Model="@LearningResourceObject" OnValidSubmit="@HandleValidSubmit">
+                    <div class="form-group">
+                        <label for="itemName">Item Name</label>
+                        <input type="hidden" @bind-value="@LearningResourceObject.Id" />
+                        <InputText id="itemName" class="form-control" @bind-Value="@LearningResourceObject.Name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="itemUrl">Url</label>
+                        <input type="text" id="itemUrl" name="itemUrl" @bind-value="@LearningResourceObject.Url" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public LearningResource LearningResourceObject { get; set; }
+
+    [Parameter]
+    public Action DataChanged { get; set; }
+
+    [Parameter]
+    public RenderFragment CustomHeader { get; set; }
+
+    private async Task CloseTaskModal()
+    {
+        await jsRuntime.InvokeAsync<object>("CloseModal", "taskModal");
+    }
+
+    private async void HandleValidSubmit()
+    {
+        if (LearningResourceObject.Id == 0)
+        {
+            await service.Add(LearningResourceObject);
+        }
+        else
+        {
+            await service.Update(LearningResourceObject);
+        }
+        await CloseTaskModal();
+        DataChanged?.Invoke();
+    }
+}

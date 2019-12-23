@@ -16,6 +16,7 @@ using Microsoft.Extensions.Hosting;
 using NetLearner.Blazor.Areas.Identity;
 using NetLearner.Blazor.Data;
 using NetLearner.SharedLib.Data;
+using NetLearner.SharedLib.Services;
 
 namespace NetLearner.Blazor
 {
@@ -46,6 +47,8 @@ namespace NetLearner.Blazor
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddSingleton<WeatherForecastService>();
+
+            services.AddTransient<ILearningResourceService, LearningResourceService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
