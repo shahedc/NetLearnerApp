@@ -7,23 +7,24 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NetLearner.SharedLib.Data;
 using NetLearner.SharedLib.Models;
+using NetLearner.SharedLib.Services;
 
 namespace NetLearner.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly NetLearner.SharedLib.Data.LibDbContext _context;
+        private readonly ILearningResourceService _learningResourceService;
 
-        public IndexModel(NetLearner.SharedLib.Data.LibDbContext context)
+        public IndexModel(ILearningResourceService learningResourceService)
         {
-            _context = context;
+            _learningResourceService = learningResourceService;
         }
 
         public IList<LearningResource> LearningResource { get;set; }
 
         public async Task OnGetAsync()
         {
-            LearningResource = await _context.LearningResources.ToListAsync();
+            LearningResource = await _learningResourceService.Get();
         }
     }
 }

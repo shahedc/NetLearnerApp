@@ -8,29 +8,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NetLearner.SharedLib.Data;
 using NetLearner.SharedLib.Models;
+using NetLearner.SharedLib.Services;
 
 namespace NetLearner.Pages
 {
     public class EditModel : PageModel
     {
-        private readonly NetLearner.SharedLib.Data.LibDbContext _context;
+        private readonly ILearningResourceService _learningResourceService;
 
-        public EditModel(NetLearner.SharedLib.Data.LibDbContext context)
+        public EditModel(ILearningResourceService learningResourceService)
         {
-            _context = context;
+            _learningResourceService = learningResourceService;
         }
 
         [BindProperty]
         public LearningResource LearningResource { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            LearningResource = await _context.LearningResources.FirstOrDefaultAsync(m => m.Id == id);
+            LearningResource = await _learningResourceService.Get(id);
 
             if (LearningResource == null)
             {
@@ -48,11 +44,9 @@ namespace NetLearner.Pages
                 return Page();
             }
 
-            _context.Attach(LearningResource).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _learningResourceService.Update(LearningResource);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -71,7 +65,9 @@ namespace NetLearner.Pages
 
         private bool LearningResourceExists(int id)
         {
-            return _context.LearningResources.Any(e => e.Id == id);
+            var learningResource = _learningResourceService.Get(id);
+            return (learningResource != null);
+
         }
     }
 }

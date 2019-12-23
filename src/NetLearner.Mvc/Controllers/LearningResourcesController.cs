@@ -51,7 +51,11 @@ namespace NetLearner.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Url")] LearningResource learningResource)
         {
-            await _learningResourceService.Add(learningResource);
+            if (ModelState.IsValid)
+            {
+                await _learningResourceService.Add(learningResource);
+                return RedirectToAction(nameof(Index));
+            }
             return View(learningResource);
         }
 

@@ -7,16 +7,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NetLearner.SharedLib.Data;
 using NetLearner.SharedLib.Models;
+using NetLearner.SharedLib.Services;
 
 namespace NetLearner.Pages
 {
     public class CreateModel : PageModel
     {
-        private readonly NetLearner.SharedLib.Data.LibDbContext _context;
+        private readonly ILearningResourceService _learningResourceService;
 
-        public CreateModel(NetLearner.SharedLib.Data.LibDbContext context)
+        public CreateModel(ILearningResourceService learningResourceService)
         {
-            _context = context;
+            _learningResourceService = learningResourceService;
         }
 
         public IActionResult OnGet()
@@ -36,8 +37,7 @@ namespace NetLearner.Pages
                 return Page();
             }
 
-            _context.LearningResources.Add(LearningResource);
-            await _context.SaveChangesAsync();
+            await _learningResourceService.Add(LearningResource);
 
             return RedirectToPage("./Index");
         }

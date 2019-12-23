@@ -7,29 +7,25 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NetLearner.SharedLib.Data;
 using NetLearner.SharedLib.Models;
+using NetLearner.SharedLib.Services;
 
 namespace NetLearner.Pages
 {
     public class DeleteModel : PageModel
     {
-        private readonly NetLearner.SharedLib.Data.LibDbContext _context;
+        private readonly ILearningResourceService _learningResourceService;
 
-        public DeleteModel(NetLearner.SharedLib.Data.LibDbContext context)
+        public DeleteModel(ILearningResourceService learningResourceService)
         {
-            _context = context;
+            _learningResourceService = learningResourceService;
         }
 
         [BindProperty]
         public LearningResource LearningResource { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            LearningResource = await _context.LearningResources.FirstOrDefaultAsync(m => m.Id == id);
+            LearningResource = await _learningResourceService.Get(id);
 
             if (LearningResource == null)
             {
@@ -38,19 +34,13 @@ namespace NetLearner.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            LearningResource = await _context.LearningResources.FindAsync(id);
+            LearningResource = await _learningResourceService.Get(id);
 
             if (LearningResource != null)
             {
-                _context.LearningResources.Remove(LearningResource);
-                await _context.SaveChangesAsync();
+                await _learningResourceService.Delete(id);
             }
 
             return RedirectToPage("./Index");
