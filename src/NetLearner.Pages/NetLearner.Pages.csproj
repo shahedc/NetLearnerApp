@@ -19,4 +19,9 @@
     <ProjectReference Include="..\NetLearner.SharedLib\NetLearner.SharedLib.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
 </Project>

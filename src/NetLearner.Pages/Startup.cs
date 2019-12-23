@@ -8,10 +8,10 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
-using NetLearner.Pages.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NetLearner.SharedLib.Data;
 
 namespace NetLearner.Pages
 {
@@ -27,11 +27,16 @@ namespace NetLearner.Pages
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<LibDbContext>(options =>
+            {
+                options
+                   .UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                      assembly =>
+                      assembly.MigrationsAssembly
+                         (typeof(LibDbContext).Assembly.FullName));
+            });
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<LibDbContext>();
             services.AddRazorPages();
         }
 
