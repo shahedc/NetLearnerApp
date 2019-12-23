@@ -17,19 +17,19 @@ namespace NetLearner.SharedLib.Services
             _context = context;
         }
 
-        public async Task<LearningResource> Add(LearningResource cinematicItem)
+        public async Task<LearningResource> Add(LearningResource learningResource)
         {
-            _context.LearningResources.Add(cinematicItem);
+            _context.LearningResources.Add(learningResource);
             await _context.SaveChangesAsync();
-            return cinematicItem;
+            return learningResource;
         }
 
         public async Task<LearningResource> Delete(int id)
         {
-            var cinematicItem = await _context.LearningResources.FindAsync(id);
-            _context.LearningResources.Remove(cinematicItem);
+            var learningResource = await _context.LearningResources.FindAsync(id);
+            _context.LearningResources.Remove(learningResource);
             await _context.SaveChangesAsync();
-            return cinematicItem;
+            return learningResource;
         }
 
         public async Task<List<LearningResource>> Get()
@@ -39,15 +39,15 @@ namespace NetLearner.SharedLib.Services
 
         public async Task<LearningResource> Get(int id)
         {
-            var toDo = await _context.LearningResources.FindAsync(id);
-            return toDo;
+            var learningResource = await _context.LearningResources.FindAsync(id);
+            return learningResource;
         }
 
-        public async Task<LearningResource> Update(LearningResource cinematicItem)
+        public async Task<LearningResource> Update(LearningResource learningResource)
         {
-            _context.Entry(cinematicItem).State = EntityState.Modified;
+            _context.Entry(learningResource).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return cinematicItem;
+            return learningResource;
         }
     }
 }

@@ -7,34 +7,29 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NetLearner.SharedLib.Data;
 using NetLearner.SharedLib.Models;
+using NetLearner.SharedLib.Services;
 
 namespace NetLearner.Mvc.Controllers
 {
     public class LearningResourcesController : Controller
     {
-        private readonly LibDbContext _context;
+        private readonly ILearningResourceService _learningResourceService;
 
-        public LearningResourcesController(LibDbContext context)
+        public LearningResourcesController(ILearningResourceService learningResourceService)
         {
-            _context = context;
+            _learningResourceService = learningResourceService;
         }
 
         // GET: LearningResources
         public async Task<IActionResult> Index()
         {
-            return View(await _context.LearningResources.ToListAsync());
+            return View(await _learningResourceService.Get());
         }
 
         // GET: LearningResources/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var learningResource = await _context.LearningResources
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var learningResource = await _learningResourceService.Get(id);
             if (learningResource == null)
             {
                 return NotFound();
@@ -56,24 +51,14 @@ namespace NetLearner.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Url")] LearningResource learningResource)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(learningResource);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+            await _learningResourceService.Add(learningResource);
             return View(learningResource);
         }
 
         // GET: LearningResources/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var learningResource = await _context.LearningResources.FindAsync(id);
+            var learningResource = await _learningResourceService.Get(id);
             if (learningResource == null)
             {
                 return NotFound();
@@ -97,8 +82,7 @@ namespace NetLearner.Mvc.Controllers
             {
                 try
                 {
-                    _context.Update(learningResource);
-                    await _context.SaveChangesAsync();
+                    await _learningResourceService.Update(learningResource);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,15 +101,9 @@ namespace NetLearner.Mvc.Controllers
         }
 
         // GET: LearningResources/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var learningResource = await _context.LearningResources
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var learningResource = await _learningResourceService.Get(id);
             if (learningResource == null)
             {
                 return NotFound();
@@ -139,15 +117,16 @@ namespace NetLearner.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var learningResource = await _context.LearningResources.FindAsync(id);
-            _context.LearningResources.Remove(learningResource);
-            await _context.SaveChangesAsync();
+            await _learningResourceService.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 
+
         private bool LearningResourceExists(int id)
         {
-            return _context.LearningResources.Any(e => e.Id == id);
+            var learningResource = _learningResourceService.Get(id);
+            return (learningResource != null);
+
         }
     }
 }

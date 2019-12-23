@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NetLearner.SharedLib.Data;
+using NetLearner.SharedLib.Services;
 
 namespace NetLearner.Mvc
 {
@@ -39,6 +40,8 @@ namespace NetLearner.Mvc
                 .AddEntityFrameworkStores<LibDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddTransient<ILearningResourceService, LearningResourceService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
