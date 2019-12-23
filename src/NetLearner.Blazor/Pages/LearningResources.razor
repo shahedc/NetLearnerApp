@@ -30,7 +30,9 @@ else
             {
                 <tr>
                     <td>@learningResource.Name</td>
-                    <td>@learningResource.Url</td>
+                    <td>
+                        <a href="@learningResource.Url">@learningResource.Url</a>                       
+                    </td>
                     <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(learningResource))" data-toggle="modal" data-target="#taskModal" value="Edit" /></td>
                     <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(learningResource))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
 
