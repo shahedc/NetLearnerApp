@@ -3,7 +3,7 @@
 @using NetLearner.SharedLib.Data
 @using NetLearner.SharedLib.Models
 @using NetLearner.SharedLib.Services
-@inject ILearningResourceService service
+@inject ILearningResourceService learningResourceService
 @inject IResourceListService resourceListService
 @inject IJSRuntime jsRuntime
 
@@ -64,7 +64,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        learningResources = await service.Get();
+        learningResources = await learningResourceService.Get();
         ResourceLists = await resourceListService.Get();
     }
     private void InitializeLearningResourceObject()
@@ -76,7 +76,7 @@ else
 
     private async void DataChanged()
     {
-        learningResources = await service.Get();
+        learningResources = await learningResourceService.Get();
         ResourceLists = await resourceListService.Get();
         StateHasChanged();
     }
@@ -93,9 +93,9 @@ else
 
     private async Task Delete()
     {
-        var task = await service.Delete(learningResourceObject.Id);
+        var task = await learningResourceService.Delete(learningResourceObject.Id);
         await jsRuntime.InvokeAsync<object>("CloseModal", "confirmDeleteModal");
-        learningResources = await service.Get();
+        learningResources = await learningResourceService.Get();
         learningResourceObject = new LearningResource();
     }
 }
