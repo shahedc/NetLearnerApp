@@ -44,7 +44,7 @@ namespace NetLearner.Mvc.Controllers
         public async Task<IActionResult> Create()
         {
             var resourceList = await _resourceListService.Get();
-            ViewData["ResourceListId"] = new SelectList(resourceList, "Id", "Id");
+            ViewData["ResourceListId"] = new SelectList(resourceList, "Id", "Name");
             return View();
         }
 
@@ -61,7 +61,7 @@ namespace NetLearner.Mvc.Controllers
                 return RedirectToAction(nameof(Index));
             }
             var resourceList = await _resourceListService.Get();
-            ViewData["ResourceListId"] = new SelectList(resourceList, "Id", "Id", learningResource.ResourceListId);
+            ViewData["ResourceListId"] = new SelectList(resourceList, "Id", "Name", learningResource.ResourceListId);
             return View(learningResource);
         }
 
@@ -74,7 +74,7 @@ namespace NetLearner.Mvc.Controllers
                 return NotFound();
             }
             var resourceList = await _resourceListService.Get();
-            ViewData["ResourceListId"] = new SelectList(resourceList, "Id", "Id", learningResource.ResourceListId);
+            ViewData["ResourceListId"] = new SelectList(resourceList, "Id", "Name", learningResource.ResourceListId);
             return View(learningResource);
         }
 
@@ -111,7 +111,7 @@ namespace NetLearner.Mvc.Controllers
             }
             //
             var resourceList = await _resourceListService.Get();
-            ViewData["ResourceListId"] = new SelectList(resourceList, "Id", "Id", learningResource.ResourceListId);
+            ViewData["ResourceListId"] = new SelectList(resourceList, "Id", "Name", learningResource.ResourceListId);
             //
             return View(learningResource);
         }
