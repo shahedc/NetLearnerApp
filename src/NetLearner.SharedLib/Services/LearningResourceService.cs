@@ -34,12 +34,15 @@ namespace NetLearner.SharedLib.Services
 
         public async Task<List<LearningResource>> Get()
         {
-            return await _context.LearningResources.ToListAsync();
+            return await _context.LearningResources.Include(r => r.ResourceList).ToListAsync();
         }
 
         public async Task<LearningResource> Get(int id)
         {
-            var learningResource = await _context.LearningResources.FindAsync(id);
+            var learningResource = await _context.LearningResources
+                .Include(r => r.ResourceList)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             return learningResource;
         }
 
