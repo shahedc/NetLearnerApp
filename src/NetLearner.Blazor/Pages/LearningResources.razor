@@ -97,5 +97,6 @@ else
         await jsRuntime.InvokeAsync<object>("CloseModal", "confirmDeleteModal");
         learningResources = await learningResourceService.Get();
         learningResourceObject = new LearningResource();
+        learningResourceObject.ResourceList = new ResourceList();
     }
 }
