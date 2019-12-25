@@ -65,7 +65,7 @@ namespace NetLearner.Mvc.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["ResourceListId"] = new SelectList(_context.Set<ResourceList>(), "Id", "Id", learningResource.ResourceListId);
+            ViewData["ResourceListId"] = new SelectList(_context.Set<ResourceList>(), "Id", "Id", learningResource.ResourceListId);
             return View(learningResource);
         }
 
@@ -82,7 +82,7 @@ namespace NetLearner.Mvc.Controllers
             {
                 return NotFound();
             }
-            //ViewData["ResourceListId"] = new SelectList(_context.Set<ResourceList>(), "Id", "Id", learningResource.ResourceListId);
+            ViewData["ResourceListId"] = new SelectList(_context.Set<ResourceList>(), "Id", "Id", learningResource.ResourceListId);
             return View(learningResource);
         }
 
