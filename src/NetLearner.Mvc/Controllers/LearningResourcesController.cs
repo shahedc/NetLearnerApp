@@ -14,10 +14,12 @@ namespace NetLearner.Mvc.Controllers
     public class LearningResourcesController : Controller
     {
         private readonly ILearningResourceService _learningResourceService;
+        private readonly IResourceListService _resourceListService;
 
-        public LearningResourcesController(ILearningResourceService learningResourceService)
+        public LearningResourcesController(ILearningResourceService learningResourceService, IResourceListService resourceListService)
         {
             _learningResourceService = learningResourceService;
+            _resourceListService = resourceListService;
         }
 
         // GET: LearningResources
@@ -67,6 +69,8 @@ namespace NetLearner.Mvc.Controllers
             {
                 return NotFound();
             }
+            var resourceList = await _resourceListService.Get();
+            ViewData["ResourceListId"] = new SelectList(resourceList, "Id", "Id", learningResource.ResourceListId);
             return View(learningResource);
         }
 
@@ -75,7 +79,7 @@ namespace NetLearner.Mvc.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Url")] LearningResource learningResource)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Url,ResourceListId")] LearningResource learningResource)
         {
             if (id != learningResource.Id)
             {
@@ -101,6 +105,10 @@ namespace NetLearner.Mvc.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            //
+            var resourceList = await _resourceListService.Get();
+            ViewData["ResourceListId"] = new SelectList(resourceList, "Id", "Id", learningResource.ResourceListId);
+            //
             return View(learningResource);
         }
 

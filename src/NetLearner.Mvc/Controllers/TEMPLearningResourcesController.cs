@@ -118,7 +118,8 @@ namespace NetLearner.Mvc.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ResourceListId"] = new SelectList(_context.Set<ResourceList>(), "Id", "Id", learningResource.ResourceListId);
+            var resourceList = _context.Set<ResourceList>();
+            ViewData["ResourceListId"] = new SelectList(resourceList, "Id", "Id", learningResource.ResourceListId);
             return View(learningResource);
         }
 
