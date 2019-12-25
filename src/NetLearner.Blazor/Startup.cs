@@ -49,6 +49,7 @@ namespace NetLearner.Blazor
             services.AddSingleton<WeatherForecastService>();
 
             services.AddTransient<ILearningResourceService, LearningResourceService>();
+            services.AddTransient<IResourceListService, ResourceListService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

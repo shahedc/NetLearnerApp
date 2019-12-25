@@ -1,0 +1,89 @@
+﻿@page "/resourcelists"
+
+@using NetLearner.SharedLib.Data
+@using NetLearner.SharedLib.Models
+@using NetLearner.SharedLib.Services
+@inject IResourceListService service
+@inject IJSRuntime jsRuntime
+
+<h1>Resource Lists</h1>
+
+<p>This is a list of Resource Lists!</p>
+
+@if (resourceLists == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var resourceList in resourceLists)
+            {
+                <tr>
+                    <td>@resourceList.Name</td>
+                    <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(resourceList))" data-toggle="modal" data-target="#taskModal" value="Edit" /></td>
+                    <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(resourceList))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<div>
+    <input type="button" data-toggle="modal" data-target="#taskModal" class="btn btn-primary" value="Add Item" @onclick="(() => InitializeResourceListObject())" />
+</div>
+
+<ConfirmDialog OnClick="@Delete" />
+<ListDetail ResourceListObject=resourceListObject
+                DataChanged="@DataChanged">
+    <CustomHeader>@customHeader</CustomHeader>
+</ListDetail>
+
+@code {
+    List<ResourceList> resourceLists;
+    ResourceList resourceListObject = new ResourceList();
+    string customHeader = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        resourceLists = await service.Get();
+    }
+    private void InitializeResourceListObject()
+    {
+        resourceListObject = new ResourceList();
+        customHeader = "Add New Item";
+    }
+
+    private async void DataChanged()
+    {
+        resourceLists = await service.Get();
+        StateHasChanged();
+    }
+    private void PrepareForEdit(ResourceList resourceList)
+    {
+        customHeader = "Edit Item";
+        resourceListObject = resourceList;
+    }
+
+    private void PrepareForDelete(ResourceList resourceList)
+    {
+        resourceListObject = resourceList;
+    }
+
+    private async Task Delete()
+    {
+        // TODO: Delete
+        //var task = await service.Delete(resourceListObject.Id);
+        await jsRuntime.InvokeAsync<object>("CloseModal", "confirmDeleteModal");
+        resourceLists = await service.Get();
+        resourceListObject = new ResourceList();
+    }
+}
