@@ -20,5 +20,6 @@ namespace NetLearner.SharedLib.Data
         }
 
         public DbSet<LearningResource> LearningResources { get; set; }
+        public DbSet<ResourceList> ResourceLists { get; set; }
     }
 }

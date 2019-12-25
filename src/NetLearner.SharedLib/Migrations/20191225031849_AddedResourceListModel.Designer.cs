@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetLearner.SharedLib.Data;
 
 namespace NetLearner.SharedLib.Migrations
 {
     [DbContext(typeof(LibDbContext))]
-    partial class LibDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191225031849_AddedResourceListModel")]
+    partial class AddedResourceListModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

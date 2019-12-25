@@ -13,5 +13,8 @@ namespace NetLearner.SharedLib.Models
 
         [DataType(DataType.Url)]
         public string Url { get; set; }
+
+        public int ResourceListId { get; set; }
+        public ResourceList ResourceList { get; set; }
     }
 }
