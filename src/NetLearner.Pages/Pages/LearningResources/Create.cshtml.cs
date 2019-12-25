@@ -14,14 +14,18 @@ namespace NetLearner.Pages.LearningResources
     public class CreateModel : PageModel
     {
         private readonly ILearningResourceService _learningResourceService;
+        private readonly IResourceListService _resourceListService;
 
-        public CreateModel(ILearningResourceService learningResourceService)
+        public CreateModel(ILearningResourceService learningResourceService, IResourceListService resourceListService)
         {
             _learningResourceService = learningResourceService;
+            _resourceListService = resourceListService;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGet()
         {
+            var resourceList = await _resourceListService.Get();
+            ViewData["ResourceListId"] = new SelectList(resourceList, "Id", "Name");
             return Page();
         }
 
@@ -39,6 +43,8 @@ namespace NetLearner.Pages.LearningResources
 
             await _learningResourceService.Add(LearningResource);
 
+            var resourceList = await _resourceListService.Get();
+            ViewData["ResourceListId"] = new SelectList(resourceList, "Id", "Name", LearningResource.ResourceListId);
             return RedirectToPage("./Index");
         }
     }

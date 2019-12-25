@@ -15,10 +15,12 @@ namespace NetLearner.Pages.LearningResources
     public class EditModel : PageModel
     {
         private readonly ILearningResourceService _learningResourceService;
+        private readonly IResourceListService _resourceListService;
 
-        public EditModel(ILearningResourceService learningResourceService)
+        public EditModel(ILearningResourceService learningResourceService, IResourceListService resourceListService)
         {
             _learningResourceService = learningResourceService;
+            _resourceListService = resourceListService;
         }
 
         [BindProperty]
@@ -32,6 +34,8 @@ namespace NetLearner.Pages.LearningResources
             {
                 return NotFound();
             }
+            var resourceList = await _resourceListService.Get();
+            ViewData["ResourceListId"] = new SelectList(resourceList, "Id", "Name", LearningResource.ResourceListId);
             return Page();
         }
 
