@@ -29,11 +29,38 @@
                     <div class="form-group">
                         <label for="itemList">List</label>
                         @*<select id="itemList" name="itemList" @bind="@LearningResourceObject.ResourceList.Id">
-                            <option value=@LearningResourceObject.ResourceList.Id>@LearningResourceObject.ResourceList.Name</option>
-                        </select>*@
-                        <InputSelect id="itemList" @bind-Value="LearningResourceObject.ResourceList.Id">
-                            <option value=@LearningResourceObject.ResourceList.Id>@LearningResourceObject.ResourceList.Name</option>
-                        </InputSelect>
+                                <option value=@LearningResourceObject.ResourceList.Id>@LearningResourceObject.ResourceList.Name</option>
+                            </select>*@
+                        @*<InputSelect id="itemList" @bind-Value="LearningResourceObject.ResourceList.Id">
+                            @foreach (var resourceList in ResourceListValues)
+                            {
+                                @if (resourceList.Id == LearningResourceObject.ResourceList.Id)
+                                {
+                                    <option selected value="@resourceList.Id">@resourceList.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@resourceList.Id">@resourceList.Name</option>
+                                }
+                            }
+
+                        </InputSelect>*@
+                    @*<InputSelect id="itemList" @bind-Value="@ResourceListValues">*@
+                    @*<InputSelect id="itemList" @bind-Value="@LearningResourceObject.ResourceList">*@
+                    @*<select id="itemList" name="itemList" *@
+                    <InputSelectNumber id="itemList" @bind-Value="@LearningResourceObject.ResourceListId">
+                        @foreach (var resourceList in ResourceListValues)
+                        {
+                            @if (resourceList.Id == LearningResourceObject.ResourceList.Id)
+                            {
+                                <option selected="selected" value="@resourceList.Id">@resourceList.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@resourceList.Id">@resourceList.Name</option>
+                            }
+                        }
+                    </InputSelectNumber>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -47,13 +74,16 @@
     [Parameter]
     public LearningResource LearningResourceObject { get; set; }
     // @bind="@LearningResourceObject.ResourceList.Name"
+        
+    [Parameter]
+    public List<ResourceList> ResourceListValues { get; set; }
 
     [Parameter]
     public Action DataChanged { get; set; }
 
     [Parameter]
     public RenderFragment CustomHeader { get; set; }
-    
+
     protected override async Task OnInitializedAsync()
     {
         LearningResourceObject.ResourceList = new ResourceList();

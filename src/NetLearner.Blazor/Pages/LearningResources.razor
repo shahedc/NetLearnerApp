@@ -4,6 +4,7 @@
 @using NetLearner.SharedLib.Models
 @using NetLearner.SharedLib.Services
 @inject ILearningResourceService service
+@inject IResourceListService resourceListService
 @inject IJSRuntime jsRuntime
 
 <h1>Learning Resources</h1>
@@ -29,16 +30,16 @@ else
         <tbody>
             @foreach (var learningResource in learningResources)
             {
-            <tr>
-                <td>@learningResource.Name</td>
-                <td>
-                    <a href="@learningResource.Url">@learningResource.Url</a>
-                </td>
-                <td>@learningResource.ResourceList.Name</td>
-                <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(learningResource))" data-toggle="modal" data-target="#taskModal" value="Edit" /></td>
-                <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(learningResource))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
+                <tr>
+                    <td>@learningResource.Name</td>
+                    <td>
+                        <a href="@learningResource.Url">@learningResource.Url</a>
+                    </td>
+                    <td>@learningResource.ResourceList.Name</td>
+                    <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(learningResource))" data-toggle="modal" data-target="#taskModal" value="Edit" /></td>
+                    <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(learningResource))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
 
-            </tr>
+                </tr>
             }
         </tbody>
     </table>
@@ -48,19 +49,23 @@ else
 </div>
 
 <ConfirmDialog OnClick="@Delete" />
-<ResourceDetail LearningResourceObject=learningResourceObject
-                 DataChanged="@DataChanged">
+<ResourceDetail LearningResourceObject="learningResourceObject"
+                ResourceListValues="ResourceLists"
+                DataChanged="@DataChanged">
     <CustomHeader>@customHeader</CustomHeader>
 </ResourceDetail>
+@*ResourceListValues="ResourceLists"*@
 
 @code {
     List<LearningResource> learningResources;
     LearningResource learningResourceObject = new LearningResource();
+    List<ResourceList> ResourceLists = new List<ResourceList>();
     string customHeader = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
         learningResources = await service.Get();
+        ResourceLists = await resourceListService.Get();
     }
     private void InitializeLearningResourceObject()
     {
@@ -72,6 +77,7 @@ else
     private async void DataChanged()
     {
         learningResources = await service.Get();
+        ResourceLists = await resourceListService.Get();
         StateHasChanged();
     }
     private void PrepareForEdit(LearningResource learningResource)
