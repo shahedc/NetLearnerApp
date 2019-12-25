@@ -80,8 +80,7 @@ else
 
     private async Task Delete()
     {
-        // TODO: Delete
-        //var task = await service.Delete(resourceListObject.Id);
+        var task = await service.Delete(resourceListObject.Id);
         await jsRuntime.InvokeAsync<object>("CloseModal", "confirmDeleteModal");
         resourceLists = await service.Get();
         resourceListObject = new ResourceList();

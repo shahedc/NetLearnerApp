@@ -50,14 +50,12 @@
     {
         if (ResourceListObject.Id == 0)
         {
-            //TODO: Add
-            //await service.Add(ResourceListObject);
+            await service.Add(ResourceListObject);
         }
         else
         {
             
-            //TODO: Update
-            //await service.Update(ResourceListObject);
+            await service.Update(ResourceListObject);
         }
         await CloseTaskModal();
         DataChanged?.Invoke();
