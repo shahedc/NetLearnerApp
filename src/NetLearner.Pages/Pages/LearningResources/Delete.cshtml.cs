@@ -9,7 +9,7 @@ using NetLearner.SharedLib.Data;
 using NetLearner.SharedLib.Models;
 using NetLearner.SharedLib.Services;
 
-namespace NetLearner.Pages
+namespace NetLearner.Pages.LearningResources
 {
     public class DeleteModel : PageModel
     {

@@ -8,30 +8,36 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NetLearner.SharedLib.Data;
 using NetLearner.SharedLib.Models;
-using NetLearner.SharedLib.Services;
 
-namespace NetLearner.Pages.LearningResources
+namespace NetLearner.Pages.TEMPLearningResources
 {
     public class EditModel : PageModel
     {
-        private readonly ILearningResourceService _learningResourceService;
+        private readonly NetLearner.SharedLib.Data.LibDbContext _context;
 
-        public EditModel(ILearningResourceService learningResourceService)
+        public EditModel(NetLearner.SharedLib.Data.LibDbContext context)
         {
-            _learningResourceService = learningResourceService;
+            _context = context;
         }
 
         [BindProperty]
         public LearningResource LearningResource { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
-            LearningResource = await _learningResourceService.Get(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            LearningResource = await _context.LearningResources
+                .Include(l => l.ResourceList).FirstOrDefaultAsync(m => m.Id == id);
 
             if (LearningResource == null)
             {
                 return NotFound();
             }
+           ViewData["ResourceListId"] = new SelectList(_context.ResourceLists, "Id", "Id");
             return Page();
         }
 
@@ -44,9 +50,11 @@ namespace NetLearner.Pages.LearningResources
                 return Page();
             }
 
+            _context.Attach(LearningResource).State = EntityState.Modified;
+
             try
             {
-                await _learningResourceService.Update(LearningResource);
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -65,9 +73,7 @@ namespace NetLearner.Pages.LearningResources
 
         private bool LearningResourceExists(int id)
         {
-            var learningResource = _learningResourceService.Get(id);
-            return (learningResource != null);
-
+            return _context.LearningResources.Any(e => e.Id == id);
         }
     }
 }

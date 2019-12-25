@@ -8,27 +8,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NetLearner.SharedLib.Data;
 using NetLearner.SharedLib.Models;
-using NetLearner.SharedLib.Services;
 
-namespace NetLearner.Pages.LearningResources
+namespace NetLearner.Pages
 {
     public class EditModel : PageModel
     {
-        private readonly ILearningResourceService _learningResourceService;
+        private readonly NetLearner.SharedLib.Data.LibDbContext _context;
 
-        public EditModel(ILearningResourceService learningResourceService)
+        public EditModel(NetLearner.SharedLib.Data.LibDbContext context)
         {
-            _learningResourceService = learningResourceService;
+            _context = context;
         }
 
         [BindProperty]
-        public LearningResource LearningResource { get; set; }
+        public ResourceList ResourceList { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
-            LearningResource = await _learningResourceService.Get(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            if (LearningResource == null)
+            ResourceList = await _context.ResourceLists.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (ResourceList == null)
             {
                 return NotFound();
             }
@@ -44,13 +48,15 @@ namespace NetLearner.Pages.LearningResources
                 return Page();
             }
 
+            _context.Attach(ResourceList).State = EntityState.Modified;
+
             try
             {
-                await _learningResourceService.Update(LearningResource);
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LearningResourceExists(LearningResource.Id))
+                if (!ResourceListExists(ResourceList.Id))
                 {
                     return NotFound();
                 }
@@ -63,11 +69,9 @@ namespace NetLearner.Pages.LearningResources
             return RedirectToPage("./Index");
         }
 
-        private bool LearningResourceExists(int id)
+        private bool ResourceListExists(int id)
         {
-            var learningResource = _learningResourceService.Get(id);
-            return (learningResource != null);
-
+            return _context.ResourceLists.Any(e => e.Id == id);
         }
     }
 }

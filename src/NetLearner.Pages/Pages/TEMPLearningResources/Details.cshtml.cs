@@ -7,24 +7,29 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NetLearner.SharedLib.Data;
 using NetLearner.SharedLib.Models;
-using NetLearner.SharedLib.Services;
 
-namespace NetLearner.Pages.LearningResources
+namespace NetLearner.Pages.TEMPLearningResources
 {
     public class DetailsModel : PageModel
     {
-        private readonly ILearningResourceService _learningResourceService;
+        private readonly NetLearner.SharedLib.Data.LibDbContext _context;
 
-        public DetailsModel(ILearningResourceService learningResourceService)
+        public DetailsModel(NetLearner.SharedLib.Data.LibDbContext context)
         {
-            _learningResourceService = learningResourceService;
+            _context = context;
         }
 
         public LearningResource LearningResource { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
-            LearningResource = await _learningResourceService.Get(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            LearningResource = await _context.LearningResources
+                .Include(l => l.ResourceList).FirstOrDefaultAsync(m => m.Id == id);
 
             if (LearningResource == null)
             {

@@ -7,17 +7,16 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NetLearner.SharedLib.Data;
 using NetLearner.SharedLib.Models;
-using NetLearner.SharedLib.Services;
 
-namespace NetLearner.Pages.LearningResources
+namespace NetLearner.Pages
 {
     public class CreateModel : PageModel
     {
-        private readonly ILearningResourceService _learningResourceService;
+        private readonly NetLearner.SharedLib.Data.LibDbContext _context;
 
-        public CreateModel(ILearningResourceService learningResourceService)
+        public CreateModel(NetLearner.SharedLib.Data.LibDbContext context)
         {
-            _learningResourceService = learningResourceService;
+            _context = context;
         }
 
         public IActionResult OnGet()
@@ -26,7 +25,7 @@ namespace NetLearner.Pages.LearningResources
         }
 
         [BindProperty]
-        public LearningResource LearningResource { get; set; }
+        public ResourceList ResourceList { get; set; }
 
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
@@ -37,7 +36,8 @@ namespace NetLearner.Pages.LearningResources
                 return Page();
             }
 
-            await _learningResourceService.Add(LearningResource);
+            _context.ResourceLists.Add(ResourceList);
+            await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

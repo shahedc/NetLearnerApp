@@ -1,5 +1,5 @@
 ﻿@page
-@model NetLearner.Pages.LearningResources.DetailsModel
+@model NetLearner.Pages.TEMPLearningResources.DetailsModel
 
 @{
     ViewData["Title"] = "Details";
@@ -22,6 +22,12 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LearningResource.Url)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LearningResource.ResourceList)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LearningResource.ResourceList.Id)
         </dd>
     </dl>
 </div>
