@@ -41,8 +41,10 @@ namespace NetLearner.Mvc.Controllers
         }
 
         // GET: LearningResources/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var resourceList = await _resourceListService.Get();
+            ViewData["ResourceListId"] = new SelectList(resourceList, "Id", "Id");
             return View();
         }
 
@@ -51,13 +53,15 @@ namespace NetLearner.Mvc.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Url")] LearningResource learningResource)
+        public async Task<IActionResult> Create([Bind("Id,Name,Url,ResourceListId")] LearningResource learningResource)
         {
             if (ModelState.IsValid)
             {
                 await _learningResourceService.Add(learningResource);
                 return RedirectToAction(nameof(Index));
             }
+            var resourceList = await _resourceListService.Get();
+            ViewData["ResourceListId"] = new SelectList(resourceList, "Id", "Id", learningResource.ResourceListId);
             return View(learningResource);
         }
 
