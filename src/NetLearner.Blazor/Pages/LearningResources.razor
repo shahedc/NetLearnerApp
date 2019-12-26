@@ -35,7 +35,9 @@ else
                     <td>
                         <a href="@learningResource.Url">@learningResource.Url</a>
                     </td>
-                    <td>@learningResource.ResourceList.Name</td>
+                    <td>
+                        <a href="javascript:void()" @onclick="(() => ShowItemsForList(learningResource.ResourceListId))"> @learningResource.ResourceList.Name</a>
+                    </td>
                     <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(learningResource))" data-toggle="modal" data-target="#taskModal" value="Edit" /></td>
                     <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(learningResource))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
 
@@ -45,7 +47,9 @@ else
     </table>
 }
 <div>
-    <input type="button" data-toggle="modal" data-target="#taskModal" class="btn btn-primary" value="Add Item" @onclick="(() => InitializeLearningResourceObject())" />
+    <input type="button" data-toggle="modal" data-target="#taskModal" class="btn btn-primary" value="Add New Resource" @onclick="(() => InitializeLearningResourceObject())" />
+
+    <input type="button" class="btn btn-primary" value="All Resources" @onclick="(() => DataChanged())" />
 </div>
 
 <ConfirmDialog OnClick="@Delete" />
@@ -54,7 +58,6 @@ else
                 DataChanged="@DataChanged">
     <CustomHeader>@customHeader</CustomHeader>
 </ResourceDetail>
-@*ResourceListValues="ResourceLists"*@
 
 @code {
     List<LearningResource> learningResources;
@@ -72,6 +75,13 @@ else
         learningResourceObject = new LearningResource();
         learningResourceObject.ResourceList = new ResourceList();
         customHeader = "Add New Item";
+    }
+    
+    private async void ShowItemsForList(int resourceListId)
+    {
+        learningResources = await learningResourceService.GetForList(resourceListId);
+        ResourceLists = await resourceListService.Get();
+        StateHasChanged();
     }
 
     private async void DataChanged()

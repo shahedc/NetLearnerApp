@@ -18,7 +18,7 @@
             <div class="modal-body">
                 <EditForm Model="@LearningResourceObject" OnValidSubmit="@HandleValidSubmit">
                     <div class="form-group">
-                        <label for="itemName">Item Name</label>
+                        <label for="itemName">Learning Resource</label>
                         <input type="hidden" @bind-value="@LearningResourceObject.Id" />
                         <InputText id="itemName" class="form-control" @bind-Value="@LearningResourceObject.Name" />
                     </div>

@@ -19,7 +19,7 @@
             <div class="modal-body">
                 <EditForm Model="@ResourceListObject" OnValidSubmit="@HandleValidSubmit">
                     <div class="form-group">
-                        <label for="itemName">Item Name</label>
+                        <label for="itemName">Resource List</label>
                         <input type="hidden" @bind-value="@ResourceListObject.Id" />
                         <InputText id="itemName" class="form-control" @bind-Value="@ResourceListObject.Name" />
                     </div>
