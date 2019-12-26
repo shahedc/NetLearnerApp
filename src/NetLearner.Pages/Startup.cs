@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NetLearner.SharedLib.Data;
 using NetLearner.SharedLib.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace NetLearner.Pages
 {
@@ -38,6 +39,16 @@ namespace NetLearner.Pages
             });
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<LibDbContext>();
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential 
+                // cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                // requires using Microsoft.AspNetCore.Http;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
             services.AddRazorPages();
 
             services.AddTransient<ILearningResourceService, LearningResourceService>();
@@ -61,6 +72,7 @@ namespace NetLearner.Pages
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseRouting();
 
