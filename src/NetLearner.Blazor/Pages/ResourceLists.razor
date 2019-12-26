@@ -28,7 +28,11 @@ else
             @foreach (var resourceList in resourceLists)
             {
                 <tr>
-                    <td>@resourceList.Name</td>
+                    <td>
+                        <NavLink class="nav-link" href="learningresources">
+                            @resourceList.Name
+                        </NavLink>
+                    </td>
                     <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(resourceList))" data-toggle="modal" data-target="#taskModal" value="Edit" /></td>
                     <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(resourceList))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
 
