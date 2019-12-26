@@ -1,4 +1,5 @@
 ﻿@page "/learningresources"
+@page "/learningresources/{resourceListId:int}"
 
 @using NetLearner.SharedLib.Data
 @using NetLearner.SharedLib.Models
@@ -65,18 +66,29 @@ else
     List<ResourceList> ResourceLists = new List<ResourceList>();
     string customHeader = string.Empty;
 
+    [Parameter]
+    public int? ResourceListId { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        learningResources = await learningResourceService.Get();
-        ResourceLists = await resourceListService.Get();
+        if (ResourceListId != null) 
+        {
+            ShowItemsForList(Convert.ToInt32(ResourceListId));
+        }
+        else
+        {
+            learningResources = await learningResourceService.Get();
+            ResourceLists = await resourceListService.Get();
+        }
     }
+
     private void InitializeLearningResourceObject()
     {
         learningResourceObject = new LearningResource();
         learningResourceObject.ResourceList = new ResourceList();
         customHeader = "Add New Item";
     }
-    
+
     private async void ShowItemsForList(int resourceListId)
     {
         learningResources = await learningResourceService.GetForList(resourceListId);
