@@ -23,14 +23,14 @@ namespace NetLearner.Pages.LearningResources
         public IList<LearningResource> LearningResource { get;set; }
         
         [BindProperty(SupportsGet = true)]
-        public string ResourceListId { get; set; }
+        public int? ResourceListId { get; set; }
 
         // /LearningResources
         // /LearningResources?ResourceListId=n
         // /LearningResources/n
         public async Task OnGetAsync()
         {
-            if (!string.IsNullOrEmpty(ResourceListId) && int.TryParse(ResourceListId, out _))
+            if (ResourceListId != null)
             {
                 LearningResource = await _learningResourceService.GetForList(Convert.ToInt32(ResourceListId));
             }
