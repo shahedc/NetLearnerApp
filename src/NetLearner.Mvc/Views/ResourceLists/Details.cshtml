@@ -19,6 +19,7 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit this List</a> |
+    <a asp-action="Index">All Lists</a> |
+    <a href="/LearningResources/GetForList?Id=@Model.Id">Resources in this List</a>
 </div>

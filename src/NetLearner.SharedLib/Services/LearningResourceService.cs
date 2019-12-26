@@ -3,6 +3,7 @@ using NetLearner.SharedLib.Data;
 using NetLearner.SharedLib.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,6 +36,15 @@ namespace NetLearner.SharedLib.Services
         public async Task<List<LearningResource>> Get()
         {
             return await _context.LearningResources.Include(r => r.ResourceList).ToListAsync();
+        }
+
+        public async Task<List<LearningResource>> GetForList(int resourceListId)
+        {
+            var results =  _context.LearningResources
+                .Where(lr => lr.ResourceListId == resourceListId)
+                .Include(r => r.ResourceList);
+
+            return await results.ToListAsync();
         }
 
         public async Task<LearningResource> Get(int id)

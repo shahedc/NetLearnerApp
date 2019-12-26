@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New Learning Resource</a>
 </p>
 <table class="table">
     <thead>
@@ -34,7 +34,9 @@
                 @Html.DisplayFor(modelItem => item.Url)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ResourceList.Name)
+                <a href="/ResourceLists/Details/@item.ResourceListId">
+                    @Html.DisplayFor(modelItem => item.ResourceList.Name)
+                </a>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

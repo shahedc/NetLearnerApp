@@ -9,6 +9,7 @@ namespace NetLearner.SharedLib.Services
     public interface ILearningResourceService
     {
         Task<List<LearningResource>> Get();
+        Task<List<LearningResource>> GetForList(int id);
         Task<LearningResource> Get(int id);
         Task<LearningResource> Add(LearningResource learningResource);
         Task<LearningResource> Update(LearningResource learningResource);
