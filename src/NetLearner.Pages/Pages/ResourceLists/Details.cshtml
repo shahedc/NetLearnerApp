@@ -20,6 +20,7 @@
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.ResourceList.Id">Edit</a> |
-    <a asp-page="./Index">All Lists</a>
+    <a asp-page="./Edit" asp-route-id="@Model.ResourceList.Id">Edit this List</a> |
+    <a asp-page="./Index">All Lists</a>|
+    <a href="/LearningResources/@Model.ResourceList.Id">Resources in this List</a>
 </div>

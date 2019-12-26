@@ -2,13 +2,13 @@
 @model NetLearner.Pages.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Resource Lists";
 }
 
-<h1>Index</h1>
+<h1>Resource Lists</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create">Create New List</a>
 </p>
 <table class="table">
     <thead>
@@ -23,7 +23,9 @@
 @foreach (var item in Model.ResourceList) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                <a href="/LearningResources/@item.Id">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </a>
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
