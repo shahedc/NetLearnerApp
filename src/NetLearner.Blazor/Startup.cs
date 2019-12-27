@@ -17,6 +17,8 @@ using NetLearner.Blazor.Areas.Identity;
 using NetLearner.Blazor.Data;
 using NetLearner.SharedLib.Data;
 using NetLearner.SharedLib.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace NetLearner.Blazor
 {
@@ -43,6 +45,17 @@ namespace NetLearner.Blazor
             });
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<LibDbContext>();
+
+            //
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+            services.AddHttpContextAccessor();
+            services.AddScoped<HttpContextAccessor>();
+            //
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
@@ -50,6 +63,7 @@ namespace NetLearner.Blazor
 
             services.AddTransient<ILearningResourceService, LearningResourceService>();
             services.AddTransient<IResourceListService, ResourceListService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,6 +84,9 @@ namespace NetLearner.Blazor
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            //
+            app.UseCookiePolicy();
+            //
             app.UseRouting();
 
             app.UseAuthentication();
