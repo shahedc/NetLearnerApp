@@ -84,7 +84,7 @@ NetLearner Blazor: Learning Resources
 
 # What's Next?
 
-In 2020, you can expect a new A-Z weekly blog series to cover 26 different topics from January through June 2020. To get a sneak peek of what's to come, take a peek at the [https://wakeupandcode.com/aspnetcore/#aspnetcore2019] (2019 A-Z series).
+In 2020, you can expect a new A-Z weekly blog series to cover 26 different topics from January through June 2020. To get a sneak peek of what's to come, take a peek at the [2019 A-Z series](https://wakeupandcode.com/aspnetcore/#aspnetcore2019).
 
 
 
