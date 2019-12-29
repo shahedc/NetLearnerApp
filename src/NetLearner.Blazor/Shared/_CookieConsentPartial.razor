@@ -5,14 +5,14 @@
 @using Microsoft.AspNetCore.Authorization;
 
 @inject IHttpContextAccessor hca
-
+@inject IJSRuntime JSRuntime
 
 
 @if (showBanner)
 {
     <div id="cookieConsent" class="alert alert-info alert-dismissible fade show" role="alert">
         Use this space to summarize your privacy and cookie use policy. <a asp-page="/Privacy">Learn More</a>.
-        <button type="button" class="accept-policy close" data-dismiss="alert" aria-label="Close" data-cookie-string="@cookieString">
+        <button type="button" class="accept-policy close" data-dismiss="alert" aria-label="Close" data-cookie-string="@cookieString" @onclick="AcceptMessage">
             <span aria-hidden="true">Accept</span>
         </button>
     </div>
@@ -25,16 +25,15 @@
         protected override void OnInitialized()
         {
             consentFeature = hca.HttpContext.Features.Get<ITrackingConsentFeature>();
-            var canTrack = consentFeature?.CanTrack ?? false;
-            showBanner = canTrack; // !consentFeature?.CanTrack ?? false;
+            showBanner = !consentFeature?.CanTrack ?? false;
             cookieString = consentFeature?.CreateConsentCookie();
         }
 
-        //(function() {
-        //var button = document.querySelector("#cookieConsent button[data-cookie-string]");
-        //button.addEventListener("click", function(event) {
-        //    document.cookie = button.dataset.cookieString;
-        //}, false);
-        //})();
+        private void AcceptMessage()
+        {
+            JSRuntime.InvokeVoidAsync(
+                "netLearnerJsFunctions.acceptMessage",
+                cookieString);
+         }
     }
 }
