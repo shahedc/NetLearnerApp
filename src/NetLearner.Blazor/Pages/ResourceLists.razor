@@ -33,8 +33,20 @@ else
                             @resourceList.Name
                         </a>
                     </td>
-                    <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(resourceList))" data-toggle="modal" data-target="#taskModal" value="Edit" /></td>
-                    <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(resourceList))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
+                    <td>
+                        <AuthorizeView>
+                            <Authorized Context="Auth">
+                                <input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(resourceList))" data-toggle="modal" data-target="#taskModal" value="Edit" />
+                            </Authorized>
+                        </AuthorizeView>
+                    </td>
+                    <td>
+                        <AuthorizeView>
+                            <Authorized Context="Auth">
+                                <input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(resourceList))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" />
+                            </Authorized>
+                        </AuthorizeView>
+                    </td>
 
                 </tr>
             }
@@ -42,7 +54,11 @@ else
     </table>
 }
 <div>
-    <input type="button" data-toggle="modal" data-target="#taskModal" class="btn btn-primary" value="Add New List" @onclick="(() => InitializeResourceListObject())" />
+    <AuthorizeView>
+        <Authorized Context="Auth">
+            <input type="button" data-toggle="modal" data-target="#taskModal" class="btn btn-primary" value="Add New List" @onclick="(() => InitializeResourceListObject())" />
+        </Authorized>
+    </AuthorizeView>
 </div>
 
 <ConfirmDialog OnClick="@Delete" />

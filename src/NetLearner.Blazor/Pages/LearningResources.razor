@@ -31,24 +31,40 @@ else
         <tbody>
             @foreach (var learningResource in learningResources)
             {
-                <tr>
-                    <td>@learningResource.Name</td>
-                    <td>
-                        <a href="@learningResource.Url">@learningResource.Url</a>
-                    </td>
-                    <td>
-                        <a href="javascript:void()" @onclick="(() => ShowItemsForList(learningResource.ResourceListId))"> @learningResource.ResourceList.Name</a>
-                    </td>
-                    <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(learningResource))" data-toggle="modal" data-target="#taskModal" value="Edit" /></td>
-                    <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(learningResource))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
+            <tr>
+                <td>@learningResource.Name</td>
+                <td>
+                    <a href="@learningResource.Url">@learningResource.Url</a>
+                </td>
+                <td>
+                    <a href="javascript:void()" @onclick="(() => ShowItemsForList(learningResource.ResourceListId))"> @learningResource.ResourceList.Name</a>
+                </td>
+                <td>
+                    <AuthorizeView>
+                        <Authorized Context="Auth">
+                            <input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(learningResource))" data-toggle="modal" data-target="#taskModal" value="Edit" />
+                        </Authorized>
+                    </AuthorizeView>
+                </td>
+                <td>
+                    <AuthorizeView>
+                        <Authorized Context="Auth">
+                            <input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(learningResource))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" />
+                        </Authorized>
+                    </AuthorizeView>
+                </td>
 
-                </tr>
+            </tr>
             }
         </tbody>
     </table>
 }
 <div>
-    <input type="button" data-toggle="modal" data-target="#taskModal" class="btn btn-primary" value="Add New Resource" @onclick="(() => InitializeLearningResourceObject())" />
+    <AuthorizeView>
+        <Authorized Context="Auth">
+            <input type="button" data-toggle="modal" data-target="#taskModal" class="btn btn-primary" value="Add New Resource" @onclick="(() => InitializeLearningResourceObject())" />
+        </Authorized>
+    </AuthorizeView>
 
     <input type="button" class="btn btn-primary" value="All Resources" @onclick="(() => DataChanged())" />
 </div>
