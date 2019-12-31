@@ -17,15 +17,31 @@
                 </button>
             </div>
             <div class="modal-body">
-                <EditForm Model="@ResourceListObject" OnValidSubmit="@HandleValidSubmit">
-                    <div class="form-group">
-                        <label for="itemName">Resource List</label>
-                        <input type="hidden" @bind-value="@ResourceListObject.Id" />
-                        <InputText id="itemName" class="form-control" @bind-Value="@ResourceListObject.Name" />
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                </EditForm>
+                <AuthorizeView>
+                    <Authorized Context="Auth">
+                        <EditForm Model="@ResourceListObject" OnValidSubmit="@HandleValidSubmit">
+                            <div class="form-group">
+                                <label for="itemName">Resource List: </label>
+                                <input type="hidden" @bind-value="@ResourceListObject.Id" />
+                                <InputText id="itemName" class="form-control" @bind-Value="@ResourceListObject.Name" />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </EditForm>
+                    </Authorized>
+                    <NotAuthorized>
+                        <div class="form-group">
+                            Resource List: 
+                            @ResourceListObject.Name
+                        </div>
+                        <div>
+                            (Read Only)
+                        </div>
+                    </NotAuthorized>
+                    <Authorizing>
+                        <p>Please wait...</p>
+                    </Authorizing>
+                </AuthorizeView>
             </div>
         </div>
     </div>
