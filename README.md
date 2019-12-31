@@ -8,7 +8,7 @@ NetLearner is an ASP .NET Core web app to allow any user to consolidate multiple
 
 Registration for each web app has been disabled by default. To enable registration, please do the following:
 
-1. Identify scaffolded Identity pages under /Areas/Identity/Pages/Account/
+1. Locate scaffolded Identity pages under /Areas/Identity/Pages/Account/
 2. In Register.cshtml, update the <environment> tag to include environments in addition to Development, if desired.
 3. In Register.cshtml.cs, replace [Authorize] with [AllowAnonymous] to allow access to registration   
 
