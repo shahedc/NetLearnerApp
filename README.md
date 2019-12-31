@@ -4,6 +4,14 @@ NetLearner: The Internet Resource Learning Helper built with ASP .NET Core
 
 NetLearner is an ASP .NET Core web app to allow any user to consolidate multiple learning resources all under one umbrella. The codebase itself is a way for new/existing .NET developers to learn ASP .NET Core, while a deployed instance of NetLearner can be used as a curated link-sharing web application. 
 
+# Restrictions
+
+Registration for each web app has been disabled by default. To enable registration, please do the following:
+
+1. Identify scaffolded Identity pages under /Areas/Identity/Pages/Account/
+2. In Register.cshtml, update the <environment> tag to include environments in addition to Development, if desired.
+3. In Register.cshtml.cs, replace [Authorize] with [AllowAnonymous] to allow access to registration   
+
 # Architecture
 
 The current version of NetLearner on Github includes a shared .NET Standard Class Library, used by multiple web app projects. The web apps include:
