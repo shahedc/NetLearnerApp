@@ -6,17 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Areas\Identity\Pages\Account\Logout.cshtml.backup.txt" />
-    <None Remove="Areas\Identity\Pages\Account\Logout.cshtml.cs.txt" />
     <None Remove="Shared\_CookieConsentPartial.cshtml.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Areas\Identity\Pages\Account\Logout.cshtml.cs.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Areas\Identity\Pages\Account\Logout.cshtml.backup.txt" />
     <Content Include="Shared\_CookieConsentPartial.cshtml.txt" />
   </ItemGroup>
 
