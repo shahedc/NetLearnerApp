@@ -49,7 +49,17 @@ namespace NetLearner.Pages
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddRazorPages();
+            services.AddRazorPages()
+                .AddRazorPagesOptions(options =>
+                {
+                    options.Conventions.AuthorizePage("/LearningResources/Create");
+                    options.Conventions.AuthorizePage("/LearningResources/Edit");
+                    options.Conventions.AuthorizePage("/LearningResources/Delete");
+                    options.Conventions.AuthorizePage("/ResourceLists/Create");
+                    options.Conventions.AuthorizePage("/ResourceLists/Edit");
+                    options.Conventions.AuthorizePage("/ResourceLists/Delete");
+                    options.Conventions.AllowAnonymousToPage("/Index");
+                });
 
             services.AddTransient<ILearningResourceService, LearningResourceService>();
             services.AddTransient<IResourceListService, ResourceListService>();
