@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 
 namespace NetLearner.Blazor.Areas.Identity.Pages.Account
 {
-    [Authorize] //[AllowAnonymous]
+    [AllowAnonymous] //[Authorize]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
