@@ -24,6 +24,8 @@ namespace NetLearner.SharedLib.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<LearningResourceTopicTag>()
                 .HasKey(lrtt => new { lrtt.LearningResourceId, lrtt.TopicTagId });
 
