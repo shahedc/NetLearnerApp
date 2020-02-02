@@ -21,6 +21,8 @@ namespace NetLearner.SharedLib.Data
 
         public DbSet<LearningResource> LearningResources { get; set; }
         public DbSet<ResourceList> ResourceLists { get; set; }
+        public DbSet<ContentFeed> ContentFeeds { get; set; }
+        public DbSet<TopicTag> TopicTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
