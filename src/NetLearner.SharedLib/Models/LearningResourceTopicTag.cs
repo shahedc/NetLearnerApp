@@ -9,7 +9,7 @@ namespace NetLearner.SharedLib.Models
         public int LearningResourceId { get; set; }
         public LearningResource LearningResource { get; set; }
 
-        public string TopicTagId { get; set; }
+        public int TopicTagId { get; set; }
         public TopicTag TopicTag { get; set; }
 
     }
