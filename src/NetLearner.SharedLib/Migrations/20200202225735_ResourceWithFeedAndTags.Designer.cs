@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetLearner.SharedLib.Data;
 
 namespace NetLearner.SharedLib.Migrations
 {
     [DbContext(typeof(LibDbContext))]
-    partial class LibDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200202225735_ResourceWithFeedAndTags")]
+    partial class ResourceWithFeedAndTags
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -237,7 +239,7 @@ namespace NetLearner.SharedLib.Migrations
                     b.HasIndex("LearningResourceId")
                         .IsUnique();
 
-                    b.ToTable("ContentFeeds");
+                    b.ToTable("ContentFeed");
                 });
 
             modelBuilder.Entity("NetLearner.SharedLib.Models.LearningResource", b =>
@@ -305,7 +307,7 @@ namespace NetLearner.SharedLib.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TopicTags");
+                    b.ToTable("TopicTag");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
