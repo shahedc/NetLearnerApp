@@ -50,7 +50,6 @@ namespace NetLearner.SharedLib.Services
         public async Task<LearningResource> Get(int id)
         {
             var learningResource = await _context.LearningResources
-                .Include(r => r.ContentFeed)
                 .Include(r => r.ResourceList)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
