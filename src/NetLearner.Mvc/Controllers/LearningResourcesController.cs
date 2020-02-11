@@ -94,7 +94,7 @@ namespace NetLearner.Mvc.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Url,ResourceListId")] LearningResource learningResource)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Url,ResourceListId,ContentFeed")] LearningResource learningResource)
         {
             if (id != learningResource.Id)
             {

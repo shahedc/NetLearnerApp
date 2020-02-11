@@ -28,6 +28,15 @@ namespace NetLearner.SharedLib.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<ContentFeed>()
+                .HasKey(s => s.Id);
+
+            modelBuilder.Entity<LearningResource>()
+            .HasOne<ContentFeed>(p => p.ContentFeed)
+            .WithOne(s => s.LearningResource)
+            .HasForeignKey<ContentFeed>(s => s.LearningResourceId);
+
+            //
             modelBuilder.Entity<LearningResourceTopicTag>()
                 .HasKey(lrtt => new { lrtt.LearningResourceId, lrtt.TopicTagId });
 
