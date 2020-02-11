@@ -23,30 +23,41 @@
             <th>
                 @Html.DisplayNameFor(model => model.LearningResource[0].ResourceList)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.LearningResource[0].ContentFeedUrl)
+            </th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.LearningResource)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Url)
-                </td>
-                <td>
-                     <a href="/LearningResources/@item.ResourceListId">
-                        @Html.DisplayFor(modelItem => item.ResourceList.Name)
-                    </a>
-                </td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a href="@item.Url"
+                   title="@item.Url">
+                    Link
+                </a>
+            </td>
+            <td>
+                <a href="/LearningResources/@item.ResourceListId">
+                    @Html.DisplayFor(modelItem => item.ResourceList.Name)
+                </a>
+            </td>
+            <td>
+                <a href="@item.ContentFeedUrl"
+                   title="@item.ContentFeedUrl">
+                    RSS
+                </a>
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

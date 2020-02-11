@@ -28,6 +28,7 @@ namespace NetLearner.SharedLib.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            //
             modelBuilder.Entity<LearningResourceTopicTag>()
                 .HasKey(lrtt => new { lrtt.LearningResourceId, lrtt.TopicTagId });
 
