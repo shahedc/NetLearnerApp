@@ -62,7 +62,7 @@ namespace NetLearner.Mvc.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Url,ResourceListId")] LearningResource learningResource)
+        public async Task<IActionResult> Create([Bind("Id,Name,Url,ResourceListId,ContentFeedUrl")] LearningResource learningResource)
         {
             if (ModelState.IsValid)
             {
