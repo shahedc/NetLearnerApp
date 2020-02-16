@@ -16,6 +16,7 @@ namespace NetLearner.Pages
             CreateHostBuilder(args).Build().Run();
         }
 
+        // uses Generic Host in .NET Core 3.x
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
