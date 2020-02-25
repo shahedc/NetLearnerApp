@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <location path="." inheritInChildApplications="false">
+    <system.webServer>
+      <handlers>
+        <add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModuleV2" resourceType="Unspecified" />
+      </handlers>
+      <aspNetCore processPath="C:\Users\REPLACE_SOMEUSER\source\repos\NetLearnerApp\src\NetLearner.Portal\bin\Debug\netcoreapp3.1\NetLearner.Portal.exe" arguments="" stdoutLogEnabled="false" hostingModel="InProcess">
+        <environmentVariables>
+          <environmentVariable name="ASPNETCORE_HTTPS_PORT" value="443" />
+          <environmentVariable name="ASPNETCORE_ENVIRONMENT" value="Development" />
+        </environmentVariables>
+      </aspNetCore>
+    </system.webServer>
+  </location>
+</configuration>
