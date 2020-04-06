@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30001.183
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetLearner.DotNet5", "NetLearner.DotNet5\NetLearner.DotNet5.csproj", "{18DCF5F6-ACFE-41D4-86EB-A0D237074C08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetLearner.DotNet5Mvc", "NetLearner.DotNet5Mvc\NetLearner.DotNet5Mvc.csproj", "{BA352B11-6A00-4766-9C07-8FFB91E94664}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetLearner.DotNet5Pages", "NetLearner.DotNet5Pages\NetLearner.DotNet5Pages.csproj", "{2BD95314-4FED-423F-A4BF-56DA351646E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetLearner.DotNet5Api", "NetLearner.DotNet5Api\NetLearner.DotNet5Api.csproj", "{6652BFD9-0CEF-4599-A473-2B256CF58034}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetLearner.DotNet5Blazor", "NetLearner.DotNet5Blazor\NetLearner.DotNet5Blazor.csproj", "{429E26EA-7719-4AC2-B773-E67B2B06FC72}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{18DCF5F6-ACFE-41D4-86EB-A0D237074C08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18DCF5F6-ACFE-41D4-86EB-A0D237074C08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18DCF5F6-ACFE-41D4-86EB-A0D237074C08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18DCF5F6-ACFE-41D4-86EB-A0D237074C08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA352B11-6A00-4766-9C07-8FFB91E94664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA352B11-6A00-4766-9C07-8FFB91E94664}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA352B11-6A00-4766-9C07-8FFB91E94664}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA352B11-6A00-4766-9C07-8FFB91E94664}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BD95314-4FED-423F-A4BF-56DA351646E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BD95314-4FED-423F-A4BF-56DA351646E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BD95314-4FED-423F-A4BF-56DA351646E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BD95314-4FED-423F-A4BF-56DA351646E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6652BFD9-0CEF-4599-A473-2B256CF58034}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6652BFD9-0CEF-4599-A473-2B256CF58034}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6652BFD9-0CEF-4599-A473-2B256CF58034}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6652BFD9-0CEF-4599-A473-2B256CF58034}.Release|Any CPU.Build.0 = Release|Any CPU
+		{429E26EA-7719-4AC2-B773-E67B2B06FC72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{429E26EA-7719-4AC2-B773-E67B2B06FC72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{429E26EA-7719-4AC2-B773-E67B2B06FC72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{429E26EA-7719-4AC2-B773-E67B2B06FC72}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3C4B104E-29C4-4093-B067-786D91FF9340}
+	EndGlobalSection
+EndGlobal
