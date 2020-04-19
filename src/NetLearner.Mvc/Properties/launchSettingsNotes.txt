@@ -1,0 +1,4 @@
+ASPNETCORE_ENVIRONMENT property values may include the following:
+"Development"
+"Staging"
+"Production"
