@@ -35,6 +35,12 @@ namespace NetLearner.Mvc.Controllers
             return View("Index", await _learningResourceService.GetForList(id));
         }
 
+        // GET: LearningResources
+        public async Task<IActionResult> GetTop(int topX)
+        {
+            return View("Index", await _learningResourceService.GetTop(topX));
+        }
+
         // GET: LearningResources/Details/5
         public async Task<IActionResult> Details(int id)
         {

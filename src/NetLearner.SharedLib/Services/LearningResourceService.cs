@@ -38,6 +38,20 @@ namespace NetLearner.SharedLib.Services
             return await _context.LearningResources.Include(r => r.ResourceList).ToListAsync();
         }
 
+
+        public async Task<List<LearningResource>> GetTop(int topX)
+        {
+            var myItems =
+            (from m in _context.LearningResources
+                .Include(r => r.ResourceList)
+                .TagWith($"This retrieves top {topX} Items!")
+                orderby m.Id ascending
+                select m)
+            .Take(topX);
+
+            return (await myItems.ToListAsync());
+        }
+
         public async Task<List<LearningResource>> GetForList(int resourceListId)
         {
             var results =  _context.LearningResources
