@@ -19,11 +19,21 @@ namespace NetLearner.Pages
             _context = context;
         }
 
+        [BindProperty(SupportsGet = true)]
+        public string SearchString { get; set; }
+
         public IList<ResourceList> ResourceList { get;set; }
 
         public async Task OnGetAsync()
         {
-            ResourceList = await _context.ResourceLists.ToListAsync();
+            var resourceLists = from rs in _context.ResourceLists
+                         select rs;
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                resourceLists = resourceLists.Where(s => s.Name.Contains(SearchString));
+            }
+
+            ResourceList = await resourceLists.ToListAsync();
         }
     }
 }

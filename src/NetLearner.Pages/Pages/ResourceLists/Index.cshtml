@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{searchString?}"
 @model NetLearner.Pages.IndexModel
 
 @{
@@ -10,6 +10,12 @@
 <p>
     <a asp-page="Create">Create New List</a>
 </p>
+<form>
+    <p>
+        Search: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -20,19 +26,20 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.ResourceList) {
-        <tr>
-            <td>
-                <a href="/LearningResources/@item.Id">
-                    @Html.DisplayFor(modelItem => item.Name)
-                </a>
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.ResourceList)
+        {
+            <tr>
+                <td>
+                    <a href="/LearningResources/@item.Id">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </a>
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
