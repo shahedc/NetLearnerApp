@@ -53,6 +53,7 @@ namespace NetLearner.SignalRPoll
             {
                 endpoints.MapRazorPages();
                 endpoints.MapHub<ChatHub>("/chatHub");
+                endpoints.MapHub<PollHub>("/pollHub");
             });
         }
     }
