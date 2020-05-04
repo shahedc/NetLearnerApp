@@ -1,0 +1,43 @@
+﻿@page
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            User: <input type="text" id="userInput" />
+            <!--
+                <br />
+                Message...<input type="text" id="messageInput" />
+            -->
+        </div>
+        <div class="col-6">&nbsp;</div>
+    </div>
+    <div class="row">POLL: Which ASP .NET Core web project template do you prefer?&nbsp;</div>
+    <div class="row">
+        <div class="col-12">
+            <!-- input type="radio" name="group1" id="r1" value="1" /><label for="r1"> button one</label>-->
+
+            <input type="radio" name="myProject" id="webmvc" value="MVC (Model-View-Controller)" />
+            <label for="webmvc">MVC (Model-View-Controller)</label>
+            <br /><span id="webmvcBlock"></span><br />
+            <input type="radio" name="myProject" id="webpages" value="Razor Pages" />
+            <label for="webpages">Razor Pages</label>
+            <br /><span id="webpagesBlock"></span><br />
+            <input type="radio" name="myProject" id="webBlazor" value="Blazor" />
+            <label for="webBlazor">Blazor</label>
+            <br /><span id="webBlazorBlock"></span><br />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <input type="button" id="sendButton" value="Vote Now" />
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <ul id="messagesList"></ul>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/poll.js"></script>
