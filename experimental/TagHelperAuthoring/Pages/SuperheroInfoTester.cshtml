@@ -1,0 +1,28 @@
+﻿@page
+@model SuperheroInfoTesterModel
+@using TagHelperAuthoring.TagHelpers;
+@using TagHelperAuthoring.Models;
+@{
+    ViewData["Title"] = "Superhero Info Tester";
+
+}
+
+
+<h2>@ViewData["Title"]</h2>
+
+NOTE: Set ShowInfoWithSpoilers to true to display spoilers for each Endgame character.
+
+<h3>Black Widow Info:</h3>
+<div condition="@Model.blackWidowInfo.ShowInfoWithSpoilers">
+    <superhero hero-info="Model.blackWidowInfo" />
+</div>
+
+<h3>Iron Man Info:</h3>
+<div condition="@Model.ironManInfo.ShowInfoWithSpoilers">
+    <superhero hero-info="Model.ironManInfo" />
+</div>
+
+<h3>Thor Info:</h3>
+<div condition="@Model.thorInfo.ShowInfoWithSpoilers">
+    <superhero hero-info="Model.thorInfo" />
+</div>
