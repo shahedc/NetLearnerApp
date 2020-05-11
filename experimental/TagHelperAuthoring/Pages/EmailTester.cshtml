@@ -1,0 +1,23 @@
+﻿@page
+@using TagHelperAuthoring.TagHelpers;
+@{
+    ViewData["Title"] = "Email Tester";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<address>
+    Avengers HQ<br />
+    New York, NY 98052<br />
+    <abbr title="Phone">P:</abbr>
+    718.555.0000
+</address>
+
+<address>
+    <strong>Black Widow:</strong> <email mail-to="Black.Widow"></email><br />
+    <strong>Iron Man:</strong> <email mail-to="Iron.Man"></email><br />
+    <strong>Thor:</strong> <email mail-to="Mighty.Thor"></email><br />
+    <strong>Captain America:</strong> <email mail-to="Captain.America"></email><br />
+    <strong>Hulk:</strong> <email mail-to="Incredible.Hulk"></email><br />
+    <strong>Hawkeye:</strong> <email mail-to="Clint.Barton"></email><br />
+</address>
