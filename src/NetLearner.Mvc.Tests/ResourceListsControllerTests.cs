@@ -47,6 +47,34 @@ namespace NetLearner.Mvc.Tests
             Assert.Equal(typeof(List<ResourceList>), viewResult.Model.GetType());
         }
 
+        [Fact]
+        public async Task Delete_ReturnsViewResultWithModel()
+        {
+
+            // Arrange
+            var resourceList = new ResourceList
+            {
+                Id = 1,
+                Name = "RL1",
+                LearningResources = new List<LearningResource>()
+            };
+
+            var mockService = new Mock<IResourceListService>();
+            mockService.Setup(s => s.Get(resourceList.Id)).Returns(Task.FromResult(resourceList));
+            var controller = new ResourceListsController(mockService.Object);
+
+            // Act
+            var result = await controller.Delete(resourceList.Id); // as ViewResult;
+
+            // Assert correct non-null View returned with expected Model
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.NotNull(viewResult);
+            Assert.Equal(nameof(controller.Delete), viewResult.ViewName);
+            Assert.NotNull(viewResult.Model);
+            Assert.Equal(typeof(ResourceList), viewResult.Model.GetType());
+        }
+
 
     }
 }

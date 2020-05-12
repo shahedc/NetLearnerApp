@@ -120,7 +120,7 @@ namespace NetLearner.Mvc.Controllers
                 return NotFound();
             }
 
-            return View(resourceList);
+            return View(nameof(Delete), resourceList);
         }
 
         // POST: ResourceLists/Delete/5
