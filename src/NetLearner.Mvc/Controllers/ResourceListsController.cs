@@ -8,34 +8,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NetLearner.SharedLib.Data;
 using NetLearner.SharedLib.Models;
+using NetLearner.SharedLib.Services;
 
 namespace NetLearner.Mvc.Controllers
 {
     public class ResourceListsController : Controller
     {
-        private readonly LibDbContext _context;
+        private readonly IResourceListService _resourceListService;
 
-        public ResourceListsController(LibDbContext context)
+        public ResourceListsController(IResourceListService resourceListService)
         {
-            _context = context;
+            _resourceListService = resourceListService;
         }
 
         // GET: ResourceLists
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ResourceLists.ToListAsync());
+            return View(nameof(Index), await _resourceListService.Get());
         }
 
         // GET: ResourceLists/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var resourceList = await _resourceListService.Get(id);
 
-            var resourceList = await _context.ResourceLists
-                .FirstOrDefaultAsync(m => m.Id == id);
             if (resourceList == null)
             {
                 return NotFound();
@@ -61,8 +57,7 @@ namespace NetLearner.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(resourceList);
-                await _context.SaveChangesAsync();
+                await _resourceListService.Add(resourceList);
                 return RedirectToAction(nameof(Index));
             }
             return View(resourceList);
@@ -70,14 +65,9 @@ namespace NetLearner.Mvc.Controllers
 
         // GET: ResourceLists/Edit/5
         [Authorize]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var resourceList = await _context.ResourceLists.FindAsync(id);
+            var resourceList = await _resourceListService.Get(id);
             if (resourceList == null)
             {
                 return NotFound();
@@ -102,8 +92,7 @@ namespace NetLearner.Mvc.Controllers
             {
                 try
                 {
-                    _context.Update(resourceList);
-                    await _context.SaveChangesAsync();
+                    await _resourceListService.Update(resourceList);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,15 +112,9 @@ namespace NetLearner.Mvc.Controllers
 
         // GET: ResourceLists/Delete/5
         [Authorize]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var resourceList = await _context.ResourceLists
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var resourceList = await _resourceListService.Get(id);
             if (resourceList == null)
             {
                 return NotFound();
@@ -146,15 +129,13 @@ namespace NetLearner.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var resourceList = await _context.ResourceLists.FindAsync(id);
-            _context.ResourceLists.Remove(resourceList);
-            await _context.SaveChangesAsync();
+            await _resourceListService.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool ResourceListExists(int id)
         {
-            return _context.ResourceLists.Any(e => e.Id == id);
+            return (_resourceListService.Get(id) != null);
         }
     }
 }
