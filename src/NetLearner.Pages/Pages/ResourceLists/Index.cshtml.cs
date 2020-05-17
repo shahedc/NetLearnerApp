@@ -14,11 +14,9 @@ namespace NetLearner.Pages.ResourceLists
     public class IndexModel : PageModel
     {
         private readonly IResourceListService _resourceListService;
-        private readonly NetLearner.SharedLib.Data.LibDbContext _context;
 
-        public IndexModel(IResourceListService resourceListService, LibDbContext context)
+        public IndexModel(IResourceListService resourceListService)
         {
-            _context = context;
             _resourceListService = resourceListService;
         }
 
