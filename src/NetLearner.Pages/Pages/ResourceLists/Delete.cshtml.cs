@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using NetLearner.SharedLib.Data;
 using NetLearner.SharedLib.Models;
 
-namespace NetLearner.Pages
+namespace NetLearner.Pages.ResourceLists
 {
     public class DeleteModel : PageModel
     {

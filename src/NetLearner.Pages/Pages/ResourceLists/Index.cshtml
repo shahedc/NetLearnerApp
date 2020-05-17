@@ -1,5 +1,5 @@
 ﻿@page "{searchString?}"
-@model NetLearner.Pages.IndexModel
+@model NetLearner.Pages.ResourceLists.IndexModel
 
 @{
     ViewData["Title"] = "Resource Lists";
@@ -20,13 +20,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ResourceList[0].Name)
+                @Html.DisplayNameFor(model => model.ResourceLists[0].Name)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.ResourceList)
+        @foreach (var item in Model.ResourceLists)
         {
             <tr>
                 <td>

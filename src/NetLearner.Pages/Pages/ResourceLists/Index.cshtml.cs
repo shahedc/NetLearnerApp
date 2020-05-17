@@ -7,33 +7,39 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NetLearner.SharedLib.Data;
 using NetLearner.SharedLib.Models;
+using NetLearner.SharedLib.Services;
 
-namespace NetLearner.Pages
+namespace NetLearner.Pages.ResourceLists
 {
     public class IndexModel : PageModel
     {
+        private readonly IResourceListService _resourceListService;
         private readonly NetLearner.SharedLib.Data.LibDbContext _context;
 
-        public IndexModel(NetLearner.SharedLib.Data.LibDbContext context)
+        public IndexModel(IResourceListService resourceListService, LibDbContext context)
         {
             _context = context;
+            _resourceListService = resourceListService;
         }
 
         [BindProperty(SupportsGet = true)]
         public string SearchString { get; set; }
 
-        public IList<ResourceList> ResourceList { get;set; }
+        public IList<ResourceList> ResourceLists { get;set; }
 
         public async Task OnGetAsync()
         {
-            var resourceLists = from rs in _context.ResourceLists
-                         select rs;
+            var resourceLists = await _resourceListService.Get();
+
             if (!string.IsNullOrEmpty(SearchString))
             {
-                resourceLists = resourceLists.Where(s => s.Name.Contains(SearchString));
+                ResourceLists = resourceLists.Where(s => s.Name
+                    .Contains(SearchString, StringComparison.InvariantCultureIgnoreCase)).ToList();
             }
-
-            ResourceList = await resourceLists.ToListAsync();
+            else
+            {
+                ResourceLists = resourceLists;
+            }
         }
     }
 }
