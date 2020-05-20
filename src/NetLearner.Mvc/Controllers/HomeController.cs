@@ -20,12 +20,12 @@ namespace NetLearner.Mvc.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(nameof(Index));
         }
 
         public IActionResult Privacy()
         {
-            return View();
+            return View(nameof(Privacy));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
