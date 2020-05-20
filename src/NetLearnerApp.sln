@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetLearner.SharedLib.Tests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetLearner.Mvc.Tests", "NetLearner.Mvc.Tests\NetLearner.Mvc.Tests.csproj", "{1EA6E097-BE1D-4F28-A720-22A0D3785340}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetLearner.Pages.Tests", "NetLearner.Pages.Tests\NetLearner.Pages.Tests.csproj", "{86A29A92-73D9-405E-95C0-886E0C20896B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetLearner.Pages.Tests", "NetLearner.Pages.Tests\NetLearner.Pages.Tests.csproj", "{86A29A92-73D9-405E-95C0-886E0C20896B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
