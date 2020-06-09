@@ -11,10 +11,14 @@ namespace NetLearner.SharedLib.Models
         public int Id { get; set; }
 
         [DisplayName("Resource")]
+        [Required]
+        [StringLength(100)]
         public string Name { get; set; }
 
 
         [DisplayName("URL")]
+        [Required]
+        [StringLength(255)]
         [DataType(DataType.Url)]
         public string Url { get; set; }
 
@@ -23,6 +27,7 @@ namespace NetLearner.SharedLib.Models
         public ResourceList ResourceList { get; set; }
 
         [DisplayName("Feed Url")]
+        [StringLength(255)]
         public string ContentFeedUrl { get; set; }
 
         public List<LearningResourceTopicTag> LearningResourceTopicTags { get; set; }

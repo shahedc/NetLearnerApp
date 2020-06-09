@@ -19,6 +19,8 @@
                 <AuthorizeView>
                     <Authorized Context="Auth">
                         <EditForm Model="@LearningResourceObject" OnValidSubmit="@HandleValidSubmit">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
                             <div class="form-group">
                                 <label for="itemName">Learning Resource</label>
                                 <input type="hidden" @bind-value="@LearningResourceObject.Id" />
@@ -97,9 +99,18 @@
     {
         if (LearningResourceObject.Id == 0)
         {
-            var selectedResourceList = ResourceListValues.Where(l => l.Id == LearningResourceObject.ResourceListId).First();
-            LearningResourceObject.ResourceList = selectedResourceList;
-            await service.Add(LearningResourceObject);
+            var allItems = ResourceListValues.Where(l => l.Id == LearningResourceObject.ResourceListId);
+
+            if (allItems.Count() > 0)
+            {
+                var selectedResourceList = allItems.First();
+                LearningResourceObject.ResourceList = selectedResourceList;
+                await service.Add(LearningResourceObject);
+            } else
+            {
+                return;
+            }
+
         }
         else
         {
