@@ -1,0 +1,124 @@
+
+
+			
+				
+	<article id="post-4128" class="post-4128 post type-post status-publish format-standard hentry category-asp-net category-azure category-learn category-visual-studio category-web-development tag-net tag-net-core tag-app-service tag-asp-net tag-asp-net-core tag-availability-set tag-availability-zone tag-azure-app-service tag-azure-devops tag-azure-pipelines tag-azure-web-apps tag-backup tag-cicd tag-continuous-deployment tag-continuous-integration tag-deployment-slots tag-devops tag-ef-core-migrations tag-feature-flags tag-restore tag-web-app tag-yaml">
+				<header class="entry-header">
+			
+						<h1 class="entry-title">Zero-Downtime* Web Apps for ASP .NET Core</h1>
+			<div>By  Shahed C on July 1, 2019</div>
+							<div class="comments-link">
+					<a href="https://wakeupandcode.com/zero-downtime-web-apps-for-asp-net-core/#comments">5 Replies</a>				</div><!-- .comments-link -->
+					</header><!-- .entry-header -->
+
+				<div class="entry-content">
+			<p>This is the <strong>twenty-sixth </strong>of a <a href="https://wakeupandcode.com/aspnetcore/#aspnetcore2019" target="_blank">series of posts</a> on ASP .NET Core in 2019. In this series, we’ve cover 26 topics over a span of 26 weeks from January through June 2019, titled <strong>A-Z of ASP .NET Core!</strong></p>
+<h1><img class="alignnone wp-image-2792" src="https://wakeupandcode.com/wp-content/uploads/2018/10/ASPNETCoreLogo-300x267-150x150.png" alt="ASPNETCoreLogo-300x267" width="75" height="67"> A – Z of ASP .NET Core!</h1>
+<h1>In this Article:</h1>
+<ul>
+<li><a href="#Z">Z is for Zero-Downtime* Web Apps</a></li>
+<li><a href="#avail">Availability</a></li>
+<li><a href="#backup">Backup &amp; Restore</a></li>
+<li><a href="#cicd">Continuous Integration &amp; Continuous Deployment</a></li>
+<li><a href="#slots">Deployment Slots</a></li>
+<li><a href="#migrations">EF Core Migrations in Production</a></li>
+<li><a href="#flags">Feature Flags</a></li>
+<li><a href="#refs">References</a></li>
+</ul>
+<p><a id="Z" name="Z"></a></p>
+<h1>Z is for Zero-Downtime* Web Apps for ASP .NET Core</h1>
+<p>If you&#8217;ve made it this far in this ASP .NET Core A-Z series, hopefully you&#8217;ve learned about many important topics related to ASP .NET Core web application development. As we wrap up this series with a look at tips and tricks to <em>attempt</em> zero-downtime, this last post itself has its own lettered A-F mini-series: <strong>A</strong>vailability, <strong>B</strong>ackup &amp; Restore, <strong>C</strong>I/CD, <strong>D</strong>eployment Slots, <strong>E</strong>F Core Migrations and <strong>F</strong>eature Flags.</p>
+<p><a href="https://wakeupandcode.com/wp-content/uploads/2019/07/Zero-Downtime-Deployment.png" rel="attachment wp-att-4171"><img class="alignnone size-full wp-image-4171" src="https://wakeupandcode.com/wp-content/uploads/2019/07/Zero-Downtime-Deployment.png" alt="Zero-Downtime-Deployment" width="1728" height="720" srcset="https://wakeupandcode.com/wp-content/uploads/2019/07/Zero-Downtime-Deployment.png 1728w, https://wakeupandcode.com/wp-content/uploads/2019/07/Zero-Downtime-Deployment-300x125.png 300w, https://wakeupandcode.com/wp-content/uploads/2019/07/Zero-Downtime-Deployment-1024x427.png 1024w, https://wakeupandcode.com/wp-content/uploads/2019/07/Zero-Downtime-Deployment-624x260.png 624w" sizes="(max-width: 1728px) 100vw, 1728px"></a></p>
+<blockquote><p>* While it may not be possible to get 100% availability 24/7/365, you can ensure a user-friendly experience free from (or at least with minimal) interruptions, by following a combination of the tips and tricks outlined below. This write-up is not meant to be a comprehensive guide. Rather, it is more of an outline with references that you can follow up on, for next steps.</p></blockquote>
+<p><a id="avail" name="avail"></a></p>
+<h1>Availability</h1>
+<p>To improve the availability of your ASP .NET Core web app running on Azure, consider running your app in multiple regions for HA (High Availability). To control traffic to/from your website, you may use <a href="https://docs.microsoft.com/en-us/azure/traffic-manager/traffic-manager-overview" target="_blank">Traffic Manager</a> to direct web traffic to a standby/secondary region, in case the primary region is unavailable.</p>
+<p>Consider the following 3 options, in which the primary region is always active and the secondary region may be passive (as a hot or cold standby) or active. When both are active, web requests are load-balanced between the two regions.</p>
+<table>
+<tbody>
+<tr>
+<td width="30"> <strong>Options</strong></td>
+<td width="208"><strong>Primary Region</strong></td>
+<td width="208"><strong>Secondary Region</strong></td>
+</tr>
+<tr>
+<td width="30">A</td>
+<td width="208">Active</td>
+<td width="208">Passive, Hot Standby</td>
+</tr>
+<tr>
+<td width="30">B</td>
+<td width="208">Active</td>
+<td width="208">Passive, Cold Standby</td>
+</tr>
+<tr>
+<td width="30">C</td>
+<td width="208">Active</td>
+<td width="208">Active</td>
+</tr>
+</tbody>
+</table>
+<p>If you&#8217;re running your web app in a Virtual Machine (VM) instead of Azure App Service, you may also consider <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/manage-availability" target="_blank">Availability Sets</a>. This helps build redundancy in your Web App&#8217;s architecture, when you have 2 or more VMs in an Availability Set. For added resiliency, use <a href="https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview" target="_blank">Azure Load Balancer</a> with your VMs to load-balance incoming traffic. As an alternative to Availability Sets, you may also use <a href="https://docs.microsoft.com/en-us/azure/availability-zones/az-overview" target="_blank">Availability Zones</a> to counter any failures within a datacenter.</p>
+<p><a id="backup" name="backup"></a></p>
+<h1>Backup &amp; Restore</h1>
+<p>Azure&#8217;s App Service lets you <a href="https://docs.microsoft.com/en-us/azure/app-service/manage-backup" target="_blank">back up and restore</a> your web application, using the Azure Portal or with <a href="https://docs.microsoft.com/en-us/azure/app-service/scripts/cli-backup-onetime" target="_blank">Azure CLI commands</a>. Note that this requires your App Service to be in at least the Standard or Premium tier, as it is not available in the Free/Shared tiers. You can create backups on demand when you wish, or schedule your backups as needed. If your site goes down, you can quickly restore your last good backup to minimize downtime.</p>
+<p><a href="https://wakeupandcode.com/wp-content/uploads/2019/07/Zero-Downtime-Backups.png" rel="attachment wp-att-4173"><img class="alignnone size-full wp-image-4173" src="https://wakeupandcode.com/wp-content/uploads/2019/07/Zero-Downtime-Backups.png" alt="Zero-Downtime-Backups" width="2465" height="1313" srcset="https://wakeupandcode.com/wp-content/uploads/2019/07/Zero-Downtime-Backups.png 2465w, https://wakeupandcode.com/wp-content/uploads/2019/07/Zero-Downtime-Backups-300x160.png 300w, https://wakeupandcode.com/wp-content/uploads/2019/07/Zero-Downtime-Backups-1024x545.png 1024w, https://wakeupandcode.com/wp-content/uploads/2019/07/Zero-Downtime-Backups-624x332.png 624w" sizes="(max-width: 2465px) 100vw, 2465px"></a></p>
+<p>In addition to the app itself, the backup process also backs up the Web App&#8217;s configuration, file contents and the database connected to your app. Database types include SQL DB (aka SQL Server PaaS), MySQL and PostgreSQL. Note that these backups include a <em>complete</em> backup, and not incremental/delta backups.</p>
+<p><a id="cicd" name="cicd"></a></p>
+<h1>Continuous Integration &amp; Continuous Deployment</h1>
+<p>In the <a href="https://wakeupandcode.com/yaml-defined-cicd-for-asp-net-core/" target="_blank">previous post</a>, we covered CI/CD with YAML pipelines. Whether you have to fix an urgent bug quickly or just deploy a planned release, it&#8217;s important to have a proper CI/CD pipeline. This allows you to deploy new features and fixes quickly with minimal downtime.</p>
+<p><a href="https://wakeupandcode.com/wp-content/uploads/2019/06/YAML-New-Pipeline.png" rel="attachment wp-att-4155"><img class="alignnone size-full wp-image-4155" src="https://wakeupandcode.com/wp-content/uploads/2019/06/YAML-New-Pipeline.png" alt="YAML-New-Pipeline" width="1822" height="995" srcset="https://wakeupandcode.com/wp-content/uploads/2019/06/YAML-New-Pipeline.png 1822w, https://wakeupandcode.com/wp-content/uploads/2019/06/YAML-New-Pipeline-300x164.png 300w, https://wakeupandcode.com/wp-content/uploads/2019/06/YAML-New-Pipeline-1024x559.png 1024w, https://wakeupandcode.com/wp-content/uploads/2019/06/YAML-New-Pipeline-624x341.png 624w" sizes="(max-width: 1822px) 100vw, 1822px"></a></p>
+<ul>
+<li>YAML-defined CI/CD for ASP .NET Core: <a href="https://wakeupandcode.com/yaml-defined-cicd-for-asp-net-core/" target="_blank">https://wakeupandcode.com/yaml-defined-cicd-for-asp-net-core/</a></li>
+</ul>
+<p><a id="slots" name="slots"></a></p>
+<h1>Deployment Slots</h1>
+<p>Whether you&#8217;re deploying your Web App to App Service for the first time or the 100th time, it helps to test out your app before releasing to the public. <a href="https://docs.microsoft.com/en-us/azure/app-service/deploy-staging-slots" target="_blank">Deployment slots</a> make it easy to set up a <em>Staging Slot</em>, warm it up and swap it immediately with a <em>Production Slot</em>. Swapping a slot that has already been warmed up ahead of time will allow you to deploy the latest version of your Web App almost immediately.</p>
+<p><a href="https://wakeupandcode.com/wp-content/uploads/2019/07/Zero-Downtime-Slots.png" rel="attachment wp-att-4174"><img class="alignnone size-full wp-image-4174" src="https://wakeupandcode.com/wp-content/uploads/2019/07/Zero-Downtime-Slots.png" alt="Zero-Downtime-Slots" width="2419" height="1028" srcset="https://wakeupandcode.com/wp-content/uploads/2019/07/Zero-Downtime-Slots.png 2419w, https://wakeupandcode.com/wp-content/uploads/2019/07/Zero-Downtime-Slots-300x127.png 300w, https://wakeupandcode.com/wp-content/uploads/2019/07/Zero-Downtime-Slots-1024x435.png 1024w, https://wakeupandcode.com/wp-content/uploads/2019/07/Zero-Downtime-Slots-624x265.png 624w" sizes="(max-width: 2419px) 100vw, 2419px"></a></p>
+<p>Note that this feature is only available in Standard, Premium or Isolated App Service tiers, as it is <em>not</em> available in the Free/Shared tiers. You can combine Deployment Slots with your CI/CD pipelines to ensure that your automated deployments end up in the intended slots.</p>
+<p><a id="migrations" name="migrations"></a></p>
+<h1>EF Core Migrations in Production</h1>
+<p>We covered <a href="https://wakeupandcode.com/ef-core-migrations-in-asp-net-core/" target="_blank">EF Core Migrations</a> in a previous post, which is one way of upgrading your database in various environments (including production). <em>But wait, is it safe to run EF Core Migrations in a production environment? </em>Even though you can use auto-generated EF Core migrations (written in C# or outputted as SQL Scripts), you may also modify your migrations for your needs.</p>
+<p>I would highly recommend reading <a href="https://twitter.com/thereformedprog" target="_blank">Jon P Smith</a>&#8216;s two-part series on &#8220;Handling Entity Framework Core database migrations in production&#8221;:</p>
+<ul>
+<li>Part 1 of 2: <a href="https://www.thereformedprogrammer.net/handling-entity-framework-core-database-migrations-in-production-part-1/" target="_blank">https://www.thereformedprogrammer.net/handling-entity-framework-core-database-migrations-in-production-part-1/</a></li>
+<li>Part 2 of 2: <a href="https://www.thereformedprogrammer.net/handling-entity-framework-core-database-migrations-in-production-part-2/" target="_blank">https://www.thereformedprogrammer.net/handling-entity-framework-core-database-migrations-in-production-part-2/</a></li>
+</ul>
+<p>What you decide to do is up to you (and your team). I would suggest exploring the different options available to you, to ensure that you minimize any downtime for your users. For any <em>non-breaking</em> DB changes, you should be able to migrate your DB easily. However, your site may be down for maintenance for any <em>breaking</em> DB changes.</p>
+<p><a id="flags" name="flags"></a></p>
+<h1>Feature Flags</h1>
+<p>Introduced by the Azure team, the <a href="http://Microsoft.FeatureManagement" target="_blank">Microsoft.FeatureManagement</a> package allows you to add <a href="https://docs.microsoft.com/en-us/azure/azure-app-configuration/quickstart-feature-flag-aspnet-core" target="_blank">Feature Flags</a> to your .NET application. This enables your web app to include new features that can easily be toggled for various audiences. This means that you could potentially test out new features by deploying them during off-peak times, but toggling them to become available via app configuration.</p>
+<p>To install the package, you may use the following <strong>dotnet</strong> command:</p>
+<span style="color: #808080;font-family: Courier New;">&gt;dotnet add package Microsoft.FeatureManagement --version 1.0.0-preview-XYZ</span>
+<p>&#8230; where XYZ represents the a specific version number suffix for the latest preview. If you prefer the Package Manager Console in Visual Studio, you may also use the following PowerShell command:</p>
+<span style="color: #808080;font-family: Courier New;">&gt;Install-Package Microsoft.FeatureManagement -Version 1.0.0-preview-XYZ</span>
+<p>By combining many/all of the above features, tips and tricks for your Web App deployments, you can release new features while minimizing/eliminating downtime. If you have any new suggestions, feel free to leave your comments.</p>
+<p><a id="refs" name="refs"></a></p>
+<h1>References</h1>
+<ul>
+<li>Highly available multi-region web application: <a href="https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/multi-region" target="_blank">https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/multi-region</a></li>
+<li>Design reliable Azure applications: <a href="https://docs.microsoft.com/en-us/azure/architecture/reliability/" target="_blank">https://docs.microsoft.com/en-us/azure/architecture/reliability/</a></li>
+<li>Manage the availability of Windows VMs in Azure: <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/manage-availability" target="_blank">https://docs.microsoft.com/en-us/azure/virtual-machines/windows/manage-availability</a></li>
+<li>What is Azure Load Balancer? <a href="https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview" target="_blank">https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview</a></li>
+<li>SLA for VMs: <a href="https://azure.microsoft.com/en-us/support/legal/sla/virtual-machines/" target="_blank">https://azure.microsoft.com/en-us/support/legal/sla/virtual-machines/</a></li>
+<li>Back up app &#8211; Azure App Service: <a href="https://docs.microsoft.com/en-us/azure/app-service/manage-backup" target="_blank">https://docs.microsoft.com/en-us/azure/app-service/manage-backup</a></li>
+<li>Azure CLI Script Sample &#8211; Back up an app: <a href="https://docs.microsoft.com/en-us/azure/app-service/scripts/cli-backup-onetime" target="_blank">https://docs.microsoft.com/en-us/azure/app-service/scripts/cli-backup-onetime</a></li>
+<li>CI/CD with Release pipelines: <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/release" target="_blank">https://docs.microsoft.com/en-us/azure/devops/pipelines/release</a></li>
+<li>Continuous deployment &#8211; Azure App Service: <a href="https://docs.microsoft.com/en-us/azure/app-service/deploy-continuous-deployment" target="_blank">https://docs.microsoft.com/en-us/azure/app-service/deploy-continuous-deployment</a></li>
+<li>Set up staging environments for web apps in Azure App Service: <a href="https://docs.microsoft.com/en-us/azure/app-service/deploy-staging-slots" target="_blank">https://docs.microsoft.com/en-us/azure/app-service/deploy-staging-slots</a></li>
+<li>Handling Entity Framework Core database migrations in production: <a href="https://www.thereformedprogrammer.net/handling-entity-framework-core-database-migrations-in-production-part-1/" target="_blank">https://www.thereformedprogrammer.net/handling-entity-framework-core-database-migrations-in-production-part-1/</a></li>
+<li>Handling Entity Framework Core database migrations in production – Part 2: <a href="https://www.thereformedprogrammer.net/handling-entity-framework-core-database-migrations-in-production-part-2/" target="_blank">https://www.thereformedprogrammer.net/handling-entity-framework-core-database-migrations-in-production-part-2/</a></li>
+<li>Tutorial for using feature flags in a .NET Core app: <a href="https://docs.microsoft.com/en-us/azure/azure-app-configuration/use-feature-flags-dotnet-core" target="_blank">https://docs.microsoft.com/en-us/azure/azure-app-configuration/use-feature-flags-dotnet-core</a></li>
+<li>Quickstart for adding feature flags to ASP.NET Core: <a href="https://docs.microsoft.com/en-us/azure/azure-app-configuration/quickstart-feature-flag-aspnet-core" target="_blank">https://docs.microsoft.com/en-us/azure/azure-app-configuration/quickstart-feature-flag-aspnet-core</a></li>
+</ul>
+					</div><!-- .entry-content -->
+		
+		<!-- .entry-meta -->
+	</article><!-- #post -->
+
+				<!-- .nav-single -->
+
+				
+<!-- #comments .comments-area -->
+			
+		
