@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace DocMaker
 {
@@ -16,6 +17,8 @@ namespace DocMaker
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseWindowsService()
+                .ConfigureLogging(loggerFactory => loggerFactory.AddEventLog())
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();

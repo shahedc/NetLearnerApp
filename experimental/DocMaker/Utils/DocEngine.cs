@@ -14,8 +14,7 @@ namespace DocMaker.Utils
         {
             // Get HTML from website
             string htmlContent = string.Empty;
-            string outputFileName = "_output.docx";
-
+            Console.WriteLine($"Source: {pageUrl}");
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(pageUrl);
 
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
@@ -24,8 +23,7 @@ namespace DocMaker.Utils
             {
                 htmlContent = reader.ReadToEnd();
             }
-            outputFileName = request.RequestUri.AbsolutePath.Substring(1);
-
+            string outputFileName = request.RequestUri.AbsolutePath.Substring(1);
             if (showHtml)
                 Console.WriteLine(htmlContent);
 
@@ -44,7 +42,6 @@ namespace DocMaker.Utils
             File.WriteAllText(@"HtmlContent.txt", htmlNodeContent);
 
             Console.WriteLine("Making your document...");
-            Console.WriteLine($"Source: {pageUrl}");
 
             // Create DOCX file
             WordDocument wordDoc = new WordDocument($"{outputFileName}.docx");
@@ -65,11 +62,11 @@ namespace DocMaker.Utils
             var preNodes = htmlDoc.DocumentNode.SelectNodes("//pre");
             foreach (HtmlNode htmlPreNode in preNodes)
             {
-                // replace doc's newline with "NEWLINE" placeholder
-                // ... as HTML tag insertion doesn't seem to work (?)
+                // replace doc's \n newlines with HTML breaks
+                // ... as Environment.NewLine doesn't seem to work (?)
                 var replacedText = htmlPreNode.InnerText
-                    .Replace(System.Environment.NewLine, "NEWLINE");
-
+                    .Replace("\n", "<br />");
+                
                 var TextWithFormatting = "<span style=\"color: #808080;font-family: Courier New;\">"
                     + replacedText + "</span>";
 
@@ -77,14 +74,10 @@ namespace DocMaker.Utils
                     HtmlTextNode.CreateNode(
                         TextWithFormatting), htmlPreNode);
             }
-            //
-
 
             HtmlNode htmlNode = htmlDoc.DocumentNode.SelectSingleNode("//*[@id=\"content\"]");
             string htmlNodeContent = (htmlNode == null) ? "Error, id not found" : htmlNode.InnerHtml;
 
-            // replace placeholders with actual <br> tags
-            htmlNodeContent = htmlNodeContent.Replace("NEWLINE", "<br />");
             return htmlNodeContent;
         }
 
