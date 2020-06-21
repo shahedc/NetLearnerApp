@@ -4,30 +4,46 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using NetLearner.Api.Infrastructure;
 using NetLearner.SharedLib.Models;
 
 namespace NetLearner.Api.Controllers
 {
+    // NOTE: order of precedence
+    // 1. public JsonResult Get()
+    // 2. [Produces("application/json")]
+    // 3. Accept: application/json
+
+    // [Produces("application/xml")]
+    // [Produces("application/json")] 
     [ApiController]
     [Route("api/[controller]")]
     public class LearningResourcesController : ControllerBase
     {
-        private readonly ILogger<LearningResourcesController> _logger;
+        private readonly ISampleRepository _sampleRepository;
 
-        public LearningResourcesController(ILogger<LearningResourcesController> logger)
+        public LearningResourcesController(ISampleRepository sampleRepository)
         {
-            _logger = logger;
+            _sampleRepository = sampleRepository;
         }
 
+        // GET: api/LearningResources
         [HttpGet]
-        public IEnumerable<string> Get()
+        public JsonResult Get()
         {
-            // sample list of learning resources
-            return new string[] 
+            return new JsonResult(_sampleRepository.LearningResources());
+        }
+
+        // GET: api/LearningResources/search?fragment=ir
+        [HttpGet("Search")]
+        public IActionResult Search(string fragment)
+        {
+            var result = _sampleRepository.GetByPartialName(fragment);
+            if (!result.Any())
             {
-                "ASP .NET Core 101", 
-                "ASP .NET Core Advanced"
-            };
+                return NotFound(fragment);
+            }
+            return Ok(result);
         }
     }
 }
