@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetLearner.Mvc.Tests", "Net
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetLearner.Pages.Tests", "NetLearner.Pages.Tests\NetLearner.Pages.Tests.csproj", "{86A29A92-73D9-405E-95C0-886E0C20896B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetLearner.Blazor.Tests", "NetLearner.Blazor.Tests\NetLearner.Blazor.Tests.csproj", "{0EA78035-4680-4971-BCE3-A18DA814E28C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetLearner.Blazor.Tests", "NetLearner.Blazor.Tests\NetLearner.Blazor.Tests.csproj", "{0EA78035-4680-4971-BCE3-A18DA814E28C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetLearner.Api", "NetLearner.Api\NetLearner.Api.csproj", "{30394ACF-192B-4F67-8E59-EC3079C85483}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,10 @@ Global
 		{0EA78035-4680-4971-BCE3-A18DA814E28C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EA78035-4680-4971-BCE3-A18DA814E28C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EA78035-4680-4971-BCE3-A18DA814E28C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30394ACF-192B-4F67-8E59-EC3079C85483}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30394ACF-192B-4F67-8E59-EC3079C85483}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30394ACF-192B-4F67-8E59-EC3079C85483}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30394ACF-192B-4F67-8E59-EC3079C85483}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
