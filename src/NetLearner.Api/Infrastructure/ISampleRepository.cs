@@ -9,6 +9,7 @@ namespace NetLearner.Api.Infrastructure
     public interface ISampleRepository
     {
         List<LearningResource> LearningResources();
+        LearningResource GetByListName(string listName);
         List<LearningResource> GetByPartialName(string nameSubstring);
     }
 }
