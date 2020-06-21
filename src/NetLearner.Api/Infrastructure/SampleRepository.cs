@@ -23,6 +23,7 @@ namespace NetLearner.Api.Infrastructure
             {
                 new LearningResource
                 {
+                    Id = 1,
                     Name = "ASP .NET Core Docs",
                     Url = "https://docs.microsoft.com/aspnet/core",
                     ResourceListId = 1,
@@ -30,6 +31,7 @@ namespace NetLearner.Api.Infrastructure
                 },
                 new LearningResource
                 {
+                    Id = 2,
                     Name = "Wake Up And Code!",
                     Url = "https://WakeUpAndCode.com",
                     ResourceListId = 1,
@@ -43,10 +45,15 @@ namespace NetLearner.Api.Infrastructure
         public List<LearningResource> GetByPartialName(string nameSubstring)
         {
             return LearningResources()
-                .Where(ci => ci.Name
+                .Where(lr => lr.Name
                     .IndexOf(nameSubstring, 0, StringComparison.CurrentCultureIgnoreCase) != -1)
                 .ToList();
 
+        }
+
+        public LearningResource GetByListName(string listName)
+        {
+            return LearningResources().FirstOrDefault(lr => lr.ResourceList.Name == listName);
         }
     }
 }

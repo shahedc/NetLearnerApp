@@ -14,7 +14,7 @@ namespace NetLearner.Api.Controllers
     // 2. [Produces("application/json")]
     // 3. Accept: application/json
 
-    // [Produces("application/xml")]
+    [Produces("application/xml")]
     // [Produces("application/json")] 
     [ApiController]
     [Route("api/[controller]")]
@@ -34,7 +34,7 @@ namespace NetLearner.Api.Controllers
             return new JsonResult(_sampleRepository.LearningResources());
         }
 
-        // GET: api/LearningResources/search?fragment=ir
+        // GET: api/LearningResources/search?fragment=Wa
         [HttpGet("Search")]
         public IActionResult Search(string fragment)
         {
@@ -44,6 +44,19 @@ namespace NetLearner.Api.Controllers
                 return NotFound(fragment);
             }
             return Ok(result);
+        }
+
+        // GET api/LearningResources/RL1
+        [HttpGet("{listName}")]
+        public LearningResource Get(string listName)
+        {
+            return _sampleRepository.GetByListName(listName);
+        }
+        // GET: api/LearningResources/queried?listName=RL1
+        [HttpGet("Queried")]
+        public LearningResource Queried(string listName)
+        {
+            return _sampleRepository.GetByListName(listName);
         }
     }
 }
