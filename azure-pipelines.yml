@@ -1,17 +1,90 @@
-# ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+# Example of a MultiStage Pipeline
+# to Build an ASP.NET Core app
+# and deploy it to an Azure App Service WebApp
 
 trigger:
 - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest' # Change to 'windows-latest' if your build require any Windows-specific component
 
 variables:
-  buildConfiguration: 'Release'
+  BuildConfiguration: 'Release'
+  SolutionPath: 'src/NetLearnerApp.sln'
+  ArtifactName: 'NetLearnerApp'
 
-steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+stages:
+- stage: CI
+  displayName: CI Stage
+  jobs:
+  - job: build
+    displayName: Build
+    steps:
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Build web project'
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj' # $(SolutionPath) # 
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Run unit tests'
+      inputs:
+        command: test
+        projects: '**/*Tests/*.csproj'
+        arguments: '--configuration $(BuildConfiguration) --collect:"XPlat Code Coverage"'
+
+    - task: DotNetCoreCLI@2
+      displayName: Install ReportGenerator tool
+      inputs:
+        command: custom
+        custom: tool
+        arguments: install --tool-path . dotnet-reportgenerator-globaltool
+                    
+    - script: reportgenerator -reports:$(Agent.TempDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:HtmlInline_AzurePipelines;Cobertura
+      displayName: Create reports
+          
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Publish code coverage'
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: $(Build.SourcesDirectory)/CodeCoverage/Cobertura.xml  
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Publish and zip'
+      inputs:
+        command: publish
+        publishWebProjects: False
+        projects: '**/NetLearner.Mvc.csproj' 
+        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        zipAfterPublish: True
+    
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Pipeline Artifact'
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: '$(ArtifactName)'
+        publishLocation: 'pipeline'
+
+- stage: CD
+  displayName: CD Stage
+  jobs:
+  - deployment: deploy
+    displayName: Deploy
+    environment: Production # Existing environment or it will create automatically a new one
+    strategy: 
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureRmWebAppDeployment@4
+            displayName: "Deploy to Azure WebApp"  
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'Pay-As-You-Go(6b5cfa6e-1960-45c5-b476-1f7cf7e3378b)'
+              appType: 'webApp'
+              WebAppName: 'nlwebtest'
+              packageForLinux: '$(Pipeline.Workspace)/$(ArtifactName)/*.zip'
+              enableCustomDeployment: true
+              DeploymentType: 'webDeploy'
+
+
