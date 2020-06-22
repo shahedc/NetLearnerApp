@@ -1,90 +1,55 @@
-# Example of a MultiStage Pipeline
-# to Build an ASP.NET Core app
-# and deploy it to an Azure App Service WebApp
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
 - master
 
 pool:
-  vmImage: 'windows-latest' # Change to 'windows-latest' if your build require any Windows-specific component
+  vmImage: 'windows-latest'
 
 variables:
   BuildConfiguration: 'Release'
-  SolutionPath: 'src/NetLearnerApp.sln'
-  ArtifactName: 'NetLearnerApp'
+  SolutionPath: 'YOUR_SOLUTION_FOLDER/YOUR_SOLUTION.sln'
 
-stages:
-- stage: CI
-  displayName: CI Stage
-  jobs:
-  - job: build
-    displayName: Build
-    steps:
+steps:
+# Optional: 'dotnet restore' is not necessary because the 'dotnet build' command executes restore as well.
+#- task: DotNetCoreCLI@2
+#  displayName: 'Restore dependencies'
+#  inputs:
+#    command: restore
+#    projects: '**/*.csproj'
 
-    - task: DotNetCoreCLI@2
-      displayName: 'Build web project'
-      inputs:
-        command: 'build'
-        projects: '**/*.csproj' # $(SolutionPath) # 
+- task: DotNetCoreCLI@2
+  displayName: 'Build web project'
+  inputs:
+    command: 'build'
+    projects: $(SolutionPath)
 
-    - task: DotNetCoreCLI@2
-      displayName: 'Run unit tests'
-      inputs:
-        command: test
-        projects: '**/*Tests/*.csproj'
-        arguments: '--configuration $(BuildConfiguration) --collect:"XPlat Code Coverage"'
+- task: DotNetCoreCLI@2
+  displayName: 'Publish and zip'
+  inputs:
+    command: publish
+    publishWebProjects: False
+    projects: $(SolutionPath)
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
 
-    - task: DotNetCoreCLI@2
-      displayName: Install ReportGenerator tool
-      inputs:
-        command: custom
-        custom: tool
-        arguments: install --tool-path . dotnet-reportgenerator-globaltool
-                    
-    - script: reportgenerator -reports:$(Agent.TempDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:HtmlInline_AzurePipelines;Cobertura
-      displayName: Create reports
-          
-    - task: PublishCodeCoverageResults@1
-      displayName: 'Publish code coverage'
-      inputs:
-        codeCoverageTool: Cobertura
-        summaryFileLocation: $(Build.SourcesDirectory)/CodeCoverage/Cobertura.xml  
+- task: AzureWebApp@1
+  displayName: 'Deploy Azure Web App'
+  inputs:
+    azureSubscription: '<REPLACE_WITH_AZURE_SUBSCRIPTION_INFO>'
+    appName: <REPLACE_WITH_EXISTING_APP_SERVICE_NAME>
+    appType: 'webApp'
+    package: $(Build.ArtifactStagingDirectory)/**/*.zip
 
-    - task: DotNetCoreCLI@2
-      displayName: 'Publish and zip'
-      inputs:
-        command: publish
-        publishWebProjects: False
-        projects: '**/NetLearner.Mvc.csproj' 
-        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-        zipAfterPublish: True
-    
-    - task: PublishPipelineArtifact@1
-      displayName: 'Publish Pipeline Artifact'
-      inputs:
-        targetPath: '$(Build.ArtifactStagingDirectory)'
-        artifact: '$(ArtifactName)'
-        publishLocation: 'pipeline'
-
-- stage: CD
-  displayName: CD Stage
-  jobs:
-  - deployment: deploy
-    displayName: Deploy
-    environment: Production # Existing environment or it will create automatically a new one
-    strategy: 
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureRmWebAppDeployment@4
-            displayName: "Deploy to Azure WebApp"  
-            inputs:
-              ConnectionType: 'AzureRM'
-              azureSubscription: 'Pay-As-You-Go(6b5cfa6e-1960-45c5-b476-1f7cf7e3378b)'
-              appType: 'webApp'
-              WebAppName: 'nlwebtest'
-              packageForLinux: '$(Pipeline.Workspace)/$(ArtifactName)/*.zip'
-              enableCustomDeployment: true
-              DeploymentType: 'webDeploy'
+# Optional step if you want to deploy to some other system using a Release pipeline or inspect the package afterwards
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Build artifacts'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
 
 
