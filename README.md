@@ -4,9 +4,9 @@ NetLearner: The Internet Resource Learning Helper built with ASP .NET Core
 
 NetLearner is an ASP .NET Core web app to allow any user to consolidate multiple learning resources all under one umbrella. The codebase itself is a way for new/existing .NET developers to learn ASP .NET Core, while a deployed instance of NetLearner can be used as a curated link-sharing web application. 
 
-In 2020, you can expect a new A-Z weekly blog series to cover 26 different topics from January through June 2020. 
+In 2020, a new A-Z weekly blog series covered 26 different topics from January through June 2020. 
 
-Take a look at the ongoing [2020 A-Z series](https://wakeupandcode.com/aspnetcore/#aspnetcore2020).
+Take a look at the [2020 A-Z series](https://wakeupandcode.com/aspnetcore/#aspnetcore2020).
 
 To revisit the older series, you may also refer to the [2019 A-Z series](https://wakeupandcode.com/aspnetcore/#aspnetcore2019).
 
@@ -101,7 +101,9 @@ NetLearner Blazor: Learning Resources
 
 # What's Next?
 
-Once again, you can follow the [2020 A-Z series](https://wakeupandcode.com/aspnetcore/#aspnetcore2020) for weekly updates.
+Browse the [2020 A-Z series](https://wakeupandcode.com/aspnetcore/#aspnetcore2020) to catch up on blog posts in the 2020 A-Z series.
+
+Up Next: expect a free ebook that combines all the 26 articles into a single document auto-generated from the Worker Service sample.
 
 
 
