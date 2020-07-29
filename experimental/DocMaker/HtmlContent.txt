@@ -2,13 +2,13 @@
 
 			
 				
-	<article id="post-5424" class="post-5424 post type-post status-publish format-standard hentry category-asp-net category-learn category-software-architecture category-visual-studio category-web-development">
+	<article id="post-5553" class="post-5553 post type-post status-publish format-standard hentry category-asp-net category-database category-learn category-visual-studio category-web-development">
 				<header class="entry-header">
 			
-						<h1 class="entry-title">Unit Testing in ASP .NET Core 3.1</h1>
-			<div>By  Shahed C on May 25, 2020</div>
+						<h1 class="entry-title">Zero-Downtime* Web Apps for ASP .NET Core 3.1</h1>
+			<div>By  Shahed C on June 29, 2020</div>
 							<div class="comments-link">
-					<a href="https://wakeupandcode.com/unit-testing-in-asp-net-core-3-1/#comments">4 Replies</a>				</div><!-- .comments-link -->
+					<a href="https://wakeupandcode.com/zero-downtime-web-apps-for-asp-net-core-3-1/#comments">2 Replies</a>				</div><!-- .comments-link -->
 					</header><!-- .entry-header -->
 
 				<div class="entry-content">
@@ -17,7 +17,7 @@
 
 
 
-<p>This is&nbsp;the twenty-first of a new&nbsp;<a rel="noreferrer noopener" href="https://wakeupandcode.com/aspnetcore/#aspnetcore2020" target="_blank">series of posts</a>&nbsp;on ASP .NET Core 3.1 for 2020. In this series, we’ll cover 26 topics over a span of 26 weeks from January through June 2020, titled&nbsp;<strong>ASP .NET Core A-Z!</strong>&nbsp;To differentiate from the&nbsp;<a href="https://wakeupandcode.com/aspnetcore/#aspnetcore2019">2019 series</a>, the 2020 series will mostly focus on a growing single codebase (<a href="https://wakeupandcode.com/netlearner-on-asp-net-core-3-1/">NetLearner!</a>) instead of new unrelated code snippets week.</p>
+<p>This is&nbsp;the twenty-sixth of a new&nbsp;<a rel="noreferrer noopener" href="https://wakeupandcode.com/aspnetcore/#aspnetcore2020" target="_blank">series of posts</a>&nbsp;on ASP .NET Core 3.1 for 2020. In this series, we’ve covered 26 topics over a span of 26 weeks from January through June 2020, titled&nbsp;<strong>ASP .NET Core A-Z!</strong>&nbsp;To differentiate from the&nbsp;<a href="https://wakeupandcode.com/aspnetcore/#aspnetcore2019">2019 series</a>, the 2020 series mostly focused on a growing single codebase (<a href="https://wakeupandcode.com/netlearner-on-asp-net-core-3-1/">NetLearner!</a>) instead of new unrelated code snippets week.</p>
 
 
 
@@ -25,7 +25,7 @@
 
 
 
-<ul><li><a href="https://wakeupandcode.com/tag-helper-authoring-in-asp-net-core-3-1/">Tag Helpers in ASP .NET Core 3.1</a></li></ul>
+<ul><li><a href="https://wakeupandcode.com/yaml-defined-ci-cd-for-asp-net-core-3-1/">YAML-defined CI/CD for ASP .NET Core 3.1</a></li></ul>
 
 
 
@@ -33,7 +33,7 @@
 
 
 
-<ul><li>Repository:&nbsp;<a href="https://github.com/shahedc/NetLearnerApp">https://github.com/shahedc/NetLearnerApp</a></li><li>v0.21-alpha release:&nbsp;<a href="https://github.com/shahedc/NetLearnerApp/releases/tag/v0.21-alpha">https://github.com/shahedc/NetLearnerApp/releases/tag/v0.21-alpha</a></li></ul>
+<ul><li>Repository:&nbsp;<a href="https://github.com/shahedc/NetLearnerApp">https://github.com/shahedc/NetLearnerApp</a></li><li>v0.26-alpha release:&nbsp;<a href="https://github.com/shahedc/NetLearnerApp/releases/tag/v0.26-alpha">https://github.com/shahedc/NetLearnerApp/releases/tag/v0.26-alpha</a></li></ul>
 
 
 
@@ -41,344 +41,158 @@
 
 
 
-<ul><li><a href="#U">U is for Unit Testing</a></li><li><a href="#setup">Setting up Unit Testing</a></li><li><a href="#facts-theories">Facts, Theories and Inline Data</a></li><li><a href="#assert-ex">Asserts and Exceptions</a></li><li><a href="#running">Running Tests</a></li><li><a href="#names-cats">Custom Names and Categories</a></li><li><a href="#next">Next Steps</a></li><li><a href="#refs">References</a> </li></ul>
+<ul><li><a href="#Z">Z is for Zero-Downtime* Web Apps</a></li><li><a href="#avail">Availability</a></li><li><a href="#backup">Backup &amp; Restore</a></li><li><a href="#cicd">Continuous Integration &amp; Continuous Deployment</a></li><li><a href="#slots">Deployment Slots</a></li><li><a href="#migrations">EF Core Migrations in Production</a></li><li><a href="#flags">Feature Flags</a></li><li><a href="#refs">References</a></li></ul>
 
 
 
-<p><a name="U"></a></p>
-<h1>U is for Unit testing</h1>
+<p><a name="Z"></a></p>
+<h1>Z is for Zero-Downtime* Web Apps for ASP .NET Core</h1>
 
 
 
-<p>Whether you’re practicing TDD (Test-Driven Development) or writing your tests after your application code, there’s no doubt that unit testing is essential for web application development. When it’s time to pick a testing framework, there are multiple alternatives such as&nbsp;<a rel="noreferrer noopener" href="https://xunit.net/" target="_blank">xUnit.net</a>,&nbsp;<a rel="noreferrer noopener" href="https://nunit.org/" target="_blank">NUnit</a>&nbsp;and&nbsp;<a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-mstest?WT.mc_id=-blog-shchowd" target="_blank">MSTest</a>. This article will focus on xUnit.net because of its popularity (and&nbsp;<em>similarity</em>&nbsp;to its alternatives) when compared to the other testing frameworks.</p>
+<p>If you’ve made it this far in this ASP .NET Core A-Z series,&nbsp;hopefully you’ve learned about many important topics related to ASP .NET Core web application development. As we wrap up this series with a look at tips and tricks to&nbsp;<em>attempt</em>&nbsp;zero-downtime, this last post itself has its own lettered A-F mini-series:&nbsp;<strong>A</strong>vailability,&nbsp;<strong>B</strong>ackup &amp; Restore,&nbsp;<strong>C</strong>I/CD,&nbsp;<strong>D</strong>eployment Slots,&nbsp;<strong>E</strong>F Core Migrations and&nbsp;<strong>F</strong>eature Flags.</p>
 
 
 
-<p>In a nutshell: a unit test&nbsp;is code you can write to test your application code. Your web application will not have any knowledge of your test project, but your test project will need to have a dependency of the app project that it’s testing.</p>
+<figure class="wp-block-image size-large"><img src="https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-diagram-1024x427.png" alt="" class="wp-image-5698" srcset="https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-diagram-1024x427.png 1024w, https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-diagram-300x125.png 300w, https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-diagram-1536x640.png 1536w, https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-diagram-624x260.png 624w, https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-diagram.png 1728w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption>Deploying to Staging Slots in AsuApp Service</figcaption></figure>
 
 
 
-<figure class="wp-block-image size-large"><img src="https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-diagram-1024x427.png" alt="Unit Testing Project Dependencies" class="wp-image-5440" srcset="https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-diagram-1024x427.png 1024w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-diagram-300x125.png 300w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-diagram-1536x640.png 1536w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-diagram-624x260.png 624w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-diagram.png 1728w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption>Unit Testing Project Dependencies</figcaption></figure>
+<p><strong>NOTE</strong>: While it may not be possible to get 100% availability 24/7/365, you can ensure a&nbsp;user-friendly experience free from (or at least with minimal) interruptions, by following a combination of the tips and tricks outlined below.&nbsp;This write-up is not meant to be a comprehensive guide. Rather, it&nbsp;is more of an outline with references that you can follow up on, for next steps.</p>
 
 
 
-<p>Here are some&nbsp;<a rel="noreferrer noopener" href="https://twitter.com/shahedC/status/1131337874903896065" target="_blank">poll results</a>, from asking 500+ developers about which testing framework they prefer, showing xUnit.net in the lead (from May 2019).</p>
+<p><a name="avail"></a></p>
+<h1>Availability</h1>
 
 
 
-<ul><li>Twitter poll: <a href="https://twitter.com/shahedC/status/1131337874903896065">https://twitter.com/shahedC/status/1131337874903896065</a></li></ul>
+<p>To improve the availability of your ASP .NET Core web app running on Azure, consider running your app in multiple regions for HA (High Availability). To control traffic to/from your website, you may use&nbsp;<a href="https://docs.microsoft.com/en-us/azure/traffic-manager/traffic-manager-overview" target="_blank" rel="noreferrer noopener" aria-label=" (opens in a new tab)">Traffic Manager</a>&nbsp;to direct web traffic to a standby/secondary region, in case the primary region is unavailable.</p>
 
 
 
-<figure class="wp-block-embed-twitter wp-block-embed is-type-rich is-provider-twitter"><div class="wp-block-embed__wrapper">
-<blockquote class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">POLL: Hey <a href="https://twitter.com/hashtag/AspNetCore?src=hash&amp;ref_src=twsrc%5Etfw">#AspNetCore</a> <a href="https://twitter.com/hashtag/webdev?src=hash&amp;ref_src=twsrc%5Etfw">#webdev</a> community on twitter! What do you use for unit testing <a href="https://twitter.com/hashtag/ASPNET?src=hash&amp;ref_src=twsrc%5Etfw">#ASPNET</a> web apps? <br><br>Please RT for reach. Thanks!</p>&mdash; Shahed Chowdhuri @ Microsoft (@shahedC) <a href="https://twitter.com/shahedC/status/1131337874903896065?ref_src=twsrc%5Etfw">May 22, 2019</a></blockquote><script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-</div></figure>
+<p>Consider the following 3 options when running a web app in multiple Azure regions. In these scenarios, the primary region is always active and the secondary region may be passive (as a hot or cold standby) or active. When both are active, web requests are load-balanced between the two regions.</p>
 
 
 
-<p>A&nbsp;<a href="https://www.facebook.com/groups/DotNetCore/permalink/801227770277495/" target="_blank" rel="noreferrer noopener">similar poll on Facebook</a>&nbsp;also showed xUnit.net leading ahead of other testing frameworks. If you need to see the equivalent attributes and assertions, check out the comparison table provided by xUnit.net:</p>
+<figure class="wp-block-table"><table class=""><tbody><tr><td>&nbsp;<strong>Options</strong></td><td><strong>Primary Region</strong></td><td><strong>Secondary Region</strong></td></tr><tr><td>A</td><td>Active</td><td>Passive, Hot Standby</td></tr><tr><td>B</td><td>Active</td><td>Passive, Cold Standby</td></tr><tr><td>C</td><td>Active</td><td>Active</td></tr></tbody></table></figure>
 
 
 
-<ul><li>Comparing xUnit.net to other frameworks:&nbsp;<a href="https://xunit.net/docs/comparisons" target="_blank" rel="noreferrer noopener">https://xunit.net/docs/comparisons</a></li></ul>
+<p>For more information on achieving High Availability (HA) in multiple regions, check out the official docs at:</p>
 
 
 
-<p>To follow along, take a look at the test projects on Github:</p>
+<ul><li>HA multi-region web apps:  <a href="https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/multi-region">https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/multi-region</a> </li></ul>
 
 
 
-<ul><li>Shared Library tests:  <a href="https://github.com/shahedc/NetLearnerApp/tree/master/src/NetLearner.SharedLib.Tests">https://github.com/shahedc/NetLearnerApp/tree/master/src/NetLearner.SharedLib.Tests</a> </li><li>MVC tests: <a href="https://github.com/shahedc/NetLearnerApp/tree/master/src/NetLearner.Mvc.Tests">https://github.com/shahedc/NetLearnerApp/tree/master/src/NetLearner.Mvc.Tests</a></li><li>Razor Pages tests: <a href="https://github.com/shahedc/NetLearnerApp/tree/master/src/NetLearner.Pages.Tests">https://github.com/shahedc/NetLearnerApp/tree/master/src/NetLearner.Pages.Tests</a></li><li>Blazor tests: <a href="https://github.com/shahedc/NetLearnerApp/tree/master/src/NetLearner.Blazor.Tests">https://github.com/shahedc/NetLearnerApp/tree/master/src/NetLearner.Blazor.Tests</a></li></ul>
+<p>If you’re running your web app in a Virtual Machine (VM) instead of Azure App Service, you may also consider&nbsp;<a rel="noreferrer noopener" aria-label=" (opens in a new tab)" href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/manage-availability" target="_blank">Availability Sets</a>. This helps build redundancy in your Web App’s architecture,&nbsp;when you have 2 or more VMs in an Availability Set. For added resiliency, use&nbsp;<a rel="noreferrer noopener" aria-label=" (opens in a new tab)" href="https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview" target="_blank">Azure Load Balancer</a>&nbsp;with your VMs to load-balance incoming traffic.&nbsp;As an alternative&nbsp;to Availability Sets, you may also use&nbsp;<a rel="noreferrer noopener" aria-label=" (opens in a new tab)" href="https://docs.microsoft.com/en-us/azure/availability-zones/az-overview" target="_blank">Availability Zones</a>&nbsp;to counter any failures within a datacenter.</p>
 
 
 
-<p><a name="setup"></a></p>
-<h1>Setting up Unit Testing</h1>
+<p><a name="backup"></a></p>
+<h1>Backup &amp; Restore</h1>
 
 
 
-<p>The quickest way to set up unit testing for an ASP .NET Core web app project is to create a new test project using a&nbsp;template. This creates a cross-platform .NET Core project that includes one&nbsp;blank&nbsp;test. In Visual Studio 2019, search for “.net core test project” when creating a new project to identify test projects for MSTest, XUnit and NUnit. Select the&nbsp;<strong>XUnit</strong>&nbsp;project to follow along with the NetLearner samples.</p>
+<p>Azure’s App Service lets you&nbsp;<a href="https://docs.microsoft.com/en-us/azure/app-service/manage-backup" target="_blank" rel="noreferrer noopener" aria-label=" (opens in a new tab)">back up and restore</a>&nbsp;your web application, using the Azure Portal or with&nbsp;<a href="https://docs.microsoft.com/en-us/azure/app-service/scripts/cli-backup-onetime" target="_blank" rel="noreferrer noopener" aria-label=" (opens in a new tab)">Azure CLI commands</a>. Note that this requires your App Service to be in at least the Standard or Premium tier, as it is not available in the Free/Shared tiers. You can create backups on demand when you wish, or schedule your backups as needed.&nbsp;If your site goes down, you can quickly restore your last good backup to minimize downtime.</p>
 
 
 
-<figure class="wp-block-image size-large"><img src="https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-projects-1024x710.png" alt="Test Project Templates in Visual Studio 2019" class="wp-image-5444" srcset="https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-projects-1024x710.png 1024w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-projects-300x208.png 300w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-projects-1536x1065.png 1536w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-projects-624x433.png 624w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-projects.png 2048w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption>Test Project Templates in Visual Studio 2019</figcaption></figure>
+<figure class="wp-block-image size-large"><img src="https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-backups-1024x598.png" alt="" class="wp-image-5707" srcset="https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-backups-1024x598.png 1024w, https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-backups-300x175.png 300w, https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-backups-1536x897.png 1536w, https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-backups-2048x1197.png 2048w, https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-backups-624x365.png 624w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption>App Service: Backups</figcaption></figure>
 
 
 
-<p>The placeholder unit test class includes a blank test. Typically, you could create a test class for each application class being tested. The simplest unit test usually includes three distinct steps: Arrange, Act and Assert.</p>
+<p><strong>NOTE</strong>: You may use the new Snapshots feature to <em>&#8220;automatically create perioidic restore points of your app&#8221;</em>. However, this feature is only available in a Premium App Service Plan.</p>
 
 
 
-<ol><li><strong>Arrange</strong>: Set up the any variables and objects necessary.</li><li><strong>Act</strong>: Call the method being tested, passing any parameters needed</li><li><strong>Assert</strong>: Verify expected results</li></ol>
+<p>In addition to the app itself, the backup process also backs up the Web App’s configuration, file contents and the database connected to your app. Database types include SQL DB (aka SQL Server PaaS), MySQL and PostgreSQL. Note that these backups include a&nbsp;<em>complete</em>&nbsp;backup, and not incremental/delta backups.</p>
 
 
 
-<p>The unit test project should have a dependency for the app project that it’s testing. In the test project file&nbsp;<a href="https://github.com/shahedc/NetLearnerApp/blob/master/src/NetLearner.Mvc.Tests/NetLearner.Mvc.Tests.csproj">NetLearner.Mvc.Tests.csproj</a>, you’ll find a reference to&nbsp;<a href="https://github.com/shahedc/NetLearnerApp/blob/master/src/NetLearner.Mvc/NetLearner.Mvc.csproj">NetLearner.Mvc.csproj</a>.</p>
+<p><a name="cicd"></a></p>
+<h1>Continuous Integration &amp; Continuous Deployment</h1>
 
 
 
-<span style="color: #808080;font-family: Courier New;">... <br>&lt;ItemGroup&gt;<br>   &lt;ProjectReference Include="..\NetLearner.Mvc\NetLearner.Mvc.csproj" /&gt;<br>&lt;/ItemGroup&gt;<br>...</span>
+<p>In the&nbsp;<a href="https://wakeupandcode.com/yaml-defined-ci-cd-for-asp-net-core-3-1/" target="_blank" rel="noreferrer noopener" aria-label=" (opens in a new tab)">previous post</a>, we covered CI/CD with YAML pipelines. Whether you have to fix an urgent bug quickly or just deploy a planned release, it’s important to have a proper CI/CD pipeline. This allows you to deploy new features and fixes quickly with minimal downtime.</p>
 
 
 
-<p>In the Solution Explorer panel, you should see a project dependency of the reference project.</p>
+<figure class="wp-block-image size-large"><img src="https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-azdo-edit-1024x556.png" alt="" class="wp-image-5711" srcset="https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-azdo-edit-1024x556.png 1024w, https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-azdo-edit-300x163.png 300w, https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-azdo-edit-1536x834.png 1536w, https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-azdo-edit-2048x1112.png 2048w, https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-azdo-edit-624x339.png 624w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption>YAML Sample in Azure DevOps</figcaption></figure>
 
 
 
-<figure class="wp-block-image size-large"><img src="https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-project-ref-1024x332.png" alt="Project Reference in Unit Testing Project" class="wp-image-5447" srcset="https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-project-ref-1024x332.png 1024w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-project-ref-300x97.png 300w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-project-ref-1536x499.png 1536w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-project-ref-2048x665.png 2048w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-project-ref-624x203.png 624w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption>Project Reference in Unit Testing Project</figcaption></figure>
+<ul><li>YAML Sample:  <a href="https://github.com/shahedc/NetLearnerApp/blob/main/azure-pipelines.yml.txt">https://github.com/shahedc/NetLearnerApp/blob/main/azure-pipelines.yml.txt</a> </li></ul>
 
 
 
-<p>If you need help adding reference projects using CLI commands, check out the official docs at:</p>
+<p><a name="slots"></a></p>
+<h1>Deployment Slots</h1>
 
 
 
-<ul><li>Unit testing C# code in .NET Core using dotnet test and xUnit:&nbsp;<a href="https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-dotnet-test#creating-the-test-project">https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-dotnet-test#creating-the-test-project</a></li></ul>
+<p>Whether you’re deploying your Web App to App Service for the first time or the 100th time, it helps to test out your app before releasing to the public.&nbsp;<a href="https://docs.microsoft.com/en-us/azure/app-service/deploy-staging-slots" target="_blank" rel="noreferrer noopener" aria-label=" (opens in a new tab)">Deployment slots</a>&nbsp;make it easy to set up a&nbsp;<em>Staging Slot</em>, warm it up and swap it immediately with a&nbsp;<em>Production Slot</em>. Swapping a slot that has already been warmed up ahead of time will allow you to deploy the latest version of your Web App almost immediately.</p>
 
 
 
-<p><a name="facts-theories"></a></p>
-<h1>Facts, Theories and Inline Data</h1>
+<figure class="wp-block-image size-large"><img src="https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-slots-1024x445.png" alt="Deployment Slots in Azure App Service" class="wp-image-5714" srcset="https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-slots-1024x445.png 1024w, https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-slots-300x130.png 300w, https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-slots-1536x668.png 1536w, https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-slots-2048x891.png 2048w, https://wakeupandcode.com/wp-content/uploads/2020/06/zerodown-slots-624x271.png 624w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption>Deployment Slots in Azure App Service</figcaption></figure>
 
 
 
-<p>When you add a new xUnit test project, you should get a simple test class (<strong>UnitTest1</strong>) with an empty test method (<strong>Test1</strong>). This test class should be a public class and the test method should be decorated with a [<strong>Fact</strong>] attribute. The attribute indicates that this is a test method without any parameters, e.g.&nbsp;<strong>Test1</strong>().</p>
+<p>Note that&nbsp;Deployment Slots are only available in Standard, Premium or Isolated App Service tiers, not in the Free/Shared tiers. You can combine Deployment Slots with your CI/CD pipelines to ensure that your automated deployments end up in the intended slots.</p>
 
 
 
-<span style="color: #808080;font-family: Courier New;">public class UnitTest1<br>{<br>   [Fact]<br>   public void Test1()<br>   {<br>      <br>   }<br>}</span>
+<p><a name="migrations"></a></p>
+<h1>EF Core Migrations in Production</h1>
 
 
 
-<p>In the NetLearner Shared Library test project, you’ll see a test class (<a href="https://github.com/shahedc/NetLearnerApp/blob/master/src/NetLearner.SharedLib.Tests/ResourceListServiceTests.cs">ResourceListServiceTests.cs</a>) with a series of methods that&nbsp;take 1 or more parameters. Instead of a [<strong>Fact</strong>] attribute, each method has a [<strong>Theory</strong>] attribute. In addition to this primary attribute, each [<strong>Theory</strong>] attribute is followed by one of more [<strong>InlineData</strong>] attributes that have sample argument values for each method parameter.</p>
+<p>We covered&nbsp;<a href="https://wakeupandcode.com/ef-core-migrations-in-asp-net-core/" target="_blank" rel="noreferrer noopener">EF Core Migrations</a>&nbsp;in a previous post, which is one&nbsp;way of upgrading your database in various environments (including production).&nbsp;<em>But wait, is it safe to run EF Core Migrations in a production environment?&nbsp;</em>Even though you can&nbsp;use auto-generated EF Core migrations (written in C# or outputted as SQL Scripts), you may also&nbsp;modify your migrations for your needs.</p>
 
 
 
-<span style="color: #808080;font-family: Courier New;">[Theory(DisplayName = "Add New Resource List")]<br>[InlineData("RL1")]<br>public async void TestAdd(string expectedName)<br>{<br>   ...<br>}</span>
+<p>I would highly recommend reading&nbsp;<a href="https://twitter.com/thereformedprog" target="_blank" rel="noreferrer noopener">Jon P Smith</a>‘s two-part series on&nbsp;“Handling Entity Framework Core database migrations in production”:</p>
 
 
 
-<p>In the code sample, each occurrence of [InlineData] should reflect the test method&#8217;s parameters, e.g.</p>
+<ul><li>Part 1 of 2:&nbsp;<a href="https://www.thereformedprogrammer.net/handling-entity-framework-core-database-migrations-in-production-part-1/" target="_blank" rel="noreferrer noopener">https://www.thereformedprogrammer.net/handling-entity-framework-core-database-migrations-in-production-part-1/</a></li><li>Part 2 of 2:&nbsp;<a href="https://www.thereformedprogrammer.net/handling-entity-framework-core-database-migrations-in-production-part-2/" target="_blank" rel="noreferrer noopener">https://www.thereformedprogrammer.net/handling-entity-framework-core-database-migrations-in-production-part-2/</a></li></ul>
 
 
 
-<ul><li><strong>[InlineData</strong>(&#8220;RL1&#8221;)]&nbsp;–&gt; this implies that expectedName = &#8220;RL1&#8221;</li></ul>
+<p>What you decide to do is up to you (and your team). I would suggest exploring the different options available to you, to ensure that you minimize any downtime for your users. For any&nbsp;<em>non-breaking</em>&nbsp;DB changes, you should be able to migrate your DB easily. However, your site may be down for maintenance for any&nbsp;<em>breaking</em>&nbsp;DB changes.</p>
 
 
 
-<p><strong>NOTE</strong>: If you want to skip a method during your test runs, simply add a Skip parameter to your&nbsp;<strong>Fact</strong>&nbsp;or&nbsp;<strong>Theory</strong>&nbsp;with a text string for the “Reason”.</p>
+<p><a name="flags"></a></p>
+<h1>Feature Flags</h1>
 
 
 
-<p>e.g.</p>
+<p>Introduced by the Azure team, the&nbsp;<a href="https://www.nuget.org/packages/Microsoft.FeatureManagement/" target="_blank" rel="noreferrer noopener" aria-label="Microsoft.FeatureManage (opens in a new tab)">Microsoft.FeatureManage</a><a rel="noreferrer noopener" href="http://microsoft.featuremanagement/" target="_blank">ment</a>&nbsp;package allows you to add&nbsp;<a href="https://docs.microsoft.com/en-us/azure/azure-app-configuration/quickstart-feature-flag-aspnet-core" target="_blank" rel="noreferrer noopener" aria-label=" (opens in a new tab)">Feature Flags</a>&nbsp;to your .NET application. This enables your web app to include new features that can easily be toggled for various audiences. This means that you could potentially test out new features by deploying&nbsp;them during off-peak times, but toggling them to become available via app configuration.</p>
 
 
 
-<ul><li>[<strong>Fact</strong>(Skip=”this is broken”)]</li><li>[<strong>Theory</strong>(Skip=”we should skip this too”)]</li></ul>
+<p>To install the package, you may use the following&nbsp;<strong>dotnet</strong>&nbsp;command:</p>
 
 
 
-<p><a name="assert-ex"></a></p>
-<h1>Asserts and Exceptions</h1>
+<span style="color: #808080;font-family: Courier New;">&gt;dotnet add package Microsoft.FeatureManagement --version 2.0.0</span>
 
 
 
-<p>Back to the 3-step process, let’s explore the&nbsp;<strong>TestAdd</strong>() method and its method body.</p>
+<p>If you prefer the Package Manager Console in Visual Studio, you may also use the following PowerShell command:</p>
 
 
 
-<span style="color: #808080;font-family: Courier New;">public async void TestAdd(string expectedName)<br>{<br>    var options = new DbContextOptionsBuilder&lt;LibDbContext&gt;()<br>        .UseInMemoryDatabase(databaseName: "TestNewListDb").Options;<br><br>    // Set up a context (connection to the "DB") for writing<br>    using (var context = new LibDbContext(options))<br>    {<br>        // 1. Arrange<br>        var rl = new ResourceList<br>        {<br>            Name = "RL1"<br>        };<br><br>        // 2. Act <br>        var rls = new ResourceListService(context);<br>        await rls.Add(rl);<br>    }<br><br>    using (var context = new LibDbContext(options))<br>    {<br>        var rls = new ResourceListService(context);<br>        var result = await rls.Get();<br><br>        // 3. Assert<br>        Assert.NotEmpty(result);<br>        Assert.Single(result);<br>        Assert.NotEmpty(result.First().Name);<br>        Assert.Equal(expectedName, result.First().Name);<br>    }<br>}<br><br></span>
+<span style="color: #808080;font-family: Courier New;">&gt;Install-Package Microsoft.FeatureManagement -Version 2.0.0</span>
 
 
 
-<ol><li>During the&nbsp;<strong>Arrange</strong>&nbsp;step, we create a new instance of an object called&nbsp;<strong>ResourceList </strong>which will be used during the test.</li><li>During the&nbsp;<strong>Act</strong>&nbsp;step, we create a <strong>ResourceListService </strong>object to be tested, and then call its <strong>Add</strong>() method to pass along a string value that was assigned via InlineData.</li><li>During the&nbsp;<strong>Assert</strong>&nbsp;step, we compare the&nbsp;<strong>expectedName</strong>&nbsp;(passed by InlineData) with the returned result (obtained from a call to the Get method in the service being tested).</li></ol>
-
-
-
-<p>The Assert.Equal() method is a quick way to check whether an expected result is equal to a returned result. If they are equal, the test&nbsp; method will pass. Otherwise, the test will fail. There is also an Assert.True() method that can take in a boolean value, and will pass the test if the boolean value is true.</p>
-
-
-
-<p>For a complete list of Assertions in xUnit.net, refer to the Assertions section of the aforementioned comparison table:</p>
-
-
-
-<ul><li>Assertions in unit testing frameworks:&nbsp;<a href="https://xunit.net/docs/comparisons#assertions" target="_blank" rel="noreferrer noopener">https://xunit.net/docs/comparisons#assertions</a></li></ul>
-
-
-
-<p>If an exception is expected, you can&nbsp;<em>assert</em>&nbsp;a thrown exception. In this case, the test&nbsp;<em>passes</em>&nbsp;if the exception occurs. Keep in mind that unit tests are for testing&nbsp;<em>expected</em>&nbsp;scenarios. You can only test for an exception if you know that it will occur, e.g. </p>
-
-
-
-<span style="color: #808080;font-family: Courier New;">Exception ex = Assert<br>    .Throws&lt;SpecificException&gt;(() =&gt; someObject.MethodBeingTested(x, y));</span>
-
-
-
-<p>The above code tests a method named&nbsp;<strong>MethodBeingTested</strong>() for someObject being tested. A&nbsp;<strong>SpecificException</strong>() is expected to occur when the parameter values x and y are passed in. In this case, the Act and Assert steps occur in the same statement.</p>
-
-
-
-<p><strong>NOTE</strong>: There are some differences in opinion whether or not to use InMemoryDatabase for unit testing. Here are some viewpoints from .NET experts Julie Lerman (popular Pluralsight author) and Nate Barbettini (author of the Little ASP .NET Core book):</p>
-
-
-
-<ul><li><a href="https://twitter.com/julielerman/status/1259939718151770112">Julie Lerman</a>: <em>&#8220;If you use it wisely and are benefiting (not as a replacement for integration tests) then they are AOK in my mind.&#8221;</em><ul><li>Source:   <a href="https://twitter.com/julielerman/status/1259939718151770112">https://twitter.com/julielerman/status/1259939718151770112</a>  </li></ul></li><li>Nate Barbettini: <em>&#8220;I still might use InMemory for early rapid prototyping work, but no longer use it for testing. I don&#8217;t let any unit tests talk to the DB (pure classes and methods under test only), and no longer use InMemory for integration tests.&#8221;</em><ul><li>Source:  <a href="https://twitter.com/nbarbettini/status/1259939958573248514">https://twitter.com/nbarbettini/status/1259939958573248514</a> </li></ul></li><li>Discussion on GitHub:  <a href="https://github.com/dotnet/efcore/issues/18457">https://github.com/dotnet/efcore/issues/18457</a> </li></ul>
-
-
-
-<p><a name="running"></a></p>
-<h1>Running Tests</h1>
-
-
-
-<p>To run your unit tests in Visual Studio, use the Test Explorer panel.</p>
-
-
-
-<ol><li>From the top menu, click Test | Windows | Test Explorer</li><li>In the Test Explorer panel, click Run All</li><li>Review the test status and summary</li><li>If any tests fail, inspect the code and fix as needed.</li></ol>
-
-
-
-<figure class="wp-block-image size-large"><img src="https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-passing-1024x405.png" alt="Test Explorer in VS2019" class="wp-image-5452" srcset="https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-passing-1024x405.png 1024w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-passing-300x119.png 300w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-passing-624x247.png 624w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-passing.png 1215w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption>Test Explorer in VS2019</figcaption></figure>
-
-
-
-<p>To run your unit tests with a CLI Command, run the following command in the test project folder:</p>
-
-
-
-<span style="color: #808080;font-family: Courier New;">&gt; dotnet test</span>
-
-
-
-<p>The results may look something like this:</p>
-
-
-
-<figure class="wp-block-image size-large"><img src="https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-passing-cli-1024x464.png" alt="" class="wp-image-5454" srcset="https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-passing-cli-1024x464.png 1024w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-passing-cli-300x136.png 300w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-passing-cli-1536x696.png 1536w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-passing-cli-2048x929.png 2048w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-passing-cli-624x283.png 624w" sizes="(max-width: 1024px) 100vw, 1024px"></figure>
-
-
-
-<p>As of xUnit version 2, tests can automatically run in parallel to save time. Test methods within a class are considered to be in the same&nbsp;implicit&nbsp;<em>collection</em>, and so will not be run in parallel. You can also define&nbsp;<em>explicit&nbsp;</em>collections using a [<strong>Collection</strong>] attribute to decorate each test class. Multiple test classes within the same collection will not be run in parallel.</p>
-
-
-
-<p>For more information on collections, check out the official docs at:</p>
-
-
-
-<ul><li>Running Tests in Parallel:&nbsp;<a href="https://xunit.net/docs/running-tests-in-parallel" target="_blank" rel="noreferrer noopener">https://xunit.net/docs/running-tests-in-parallel</a></li></ul>
-
-
-
-<p><strong>NOTE</strong>:&nbsp;Visual Studio includes a&nbsp;<a href="https://docs.microsoft.com/en-us/visualstudio/test/live-unit-testing?view=vs-2019" target="_blank" rel="noreferrer noopener" aria-label=" (opens in a new tab)">Live Unit Testing</a>&nbsp;feature that allows you to see the status of passing/failing tests as you’re typing your code. This feature is only available in the Enterprise Edition of Visual Studio.</p>
-
-
-
-<p><a name="names-cats"></a></p>
-<h1>Custom Names and Categories</h1>
-
-
-
-<p>You may have noticed a&nbsp;<strong>DisplayName</strong>&nbsp;parameter when defining the [<strong>Theory</strong>] attribute in the code samples. This parameter allows you to defined a friendly name for any test method (Fact or Theory)&nbsp; that can be displayed in the Test Explorer. For example:</p>
-
-
-
-<span style="color: #808080;font-family: Courier New;">[Theory(DisplayName = "Add New Learning Resource")]</span>
-
-
-
-<p>Using the above attribute above the&nbsp;<strong>TestAdd</strong>() method will show the friendly name “<strong>Add New Learning Resource</strong>” in the Test Explorer panel during test runs.</p>
-
-
-
-<figure class="wp-block-image size-large"><img src="https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-displayname-1024x467.png" alt="Unit Test with custom DisplayName" class="wp-image-5457" srcset="https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-displayname-1024x467.png 1024w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-displayname-300x137.png 300w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-displayname-1536x701.png 1536w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-displayname-2048x934.png 2048w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-displayname-624x285.png 624w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption>Unit Test with custom DisplayName</figcaption></figure>
-
-
-
-<p>Finally, consider the [<strong>Trait</strong>] attribute. This attribute can be use to categorize related test methods by assigning an arbitrary name/value pair for each defined “Trait”. For example (from LearningResource and ResourceList tests, respectively):</p>
-
-
-
-<span style="color: #808080;font-family: Courier New;">[Trait("Learning Resource Tests", "Adding LR")]<br>public void&nbsp;TestAdd() { ... }<br><br>[Trait("Resource List Tests", "Adding RL")]<br>public void TestAdd { ... }</span>
-
-
-
-<p>Using the above attribute for the two <strong>TestAdd</strong>() methods&nbsp;will categorize the methods into their own named “category”, e.g. Learning Resource Tests and Resource List Tests. This makes it possible to filter just the test methods you want to see, e.g. Trait: “Adding RL”</p>
-
-
-
-<figure class="wp-block-image size-large"><img src="https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-trait-filter-1024x426.png" alt="Filtering Unit Tests by Trait Values" class="wp-image-5459" srcset="https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-trait-filter-1024x426.png 1024w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-trait-filter-300x125.png 300w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-trait-filter-624x260.png 624w, https://wakeupandcode.com/wp-content/uploads/2020/05/unittesting-trait-filter.png 1264w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption>Filtering Unit Tests by Trait Values</figcaption></figure>
-
-
-
-<p><a name="next"></a></p>
-<h1>Next Steps: Mocking, Integration Tests and More!</h1>
-
-
-
-<p>There is so much more to learn with unit testing. You could&nbsp;read several chapters or even an entire book on unit testing&nbsp;and related topics. To continue your learning in this area, consider the following:</p>
-
-
-
-<ul><li><strong>MemberData</strong>: use the MemberData attribute to&nbsp;go beyond isolated test methods. This allows you to&nbsp;reuse test values for multiples methods in the test class.</li><li><strong>ClassData</strong>: use the ClassData attribute to use your test data in multiple test classes. This allows you to specify a class that will pass a set of collections to your test method.</li></ul>
-
-
-
-<p>For more information on the above, check out this Nov 2017 post from Andrew Lock:</p>
-
-
-
-<ul><li>Creating parameterised tests in xUnit with [InlineData], [ClassData], and [MemberData]:&nbsp;<a href="https://andrewlock.net/creating-parameterised-tests-in-xunit-with-inlinedata-classdata-and-memberdata/" target="_blank" rel="noreferrer noopener">https://andrewlock.net/creating-parameterised-tests-in-xunit-with-inlinedata-classdata-and-memberdata/</a></li></ul>
-
-
-
-<p>To go beyond Unit Tests, consider the following:</p>
-
-
-
-<ul><li><strong>Mocking</strong>: use a mocking framework (e.g.&nbsp;<a rel="noreferrer noopener" href="https://github.com/Moq/moq4/wiki/Quickstart" target="_blank">Moq</a>) to mock external dependencies that you shouldn’t need to test from your own code.</li><li><strong>Integration Tests</strong>: use&nbsp;<a href="https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-3.1" target="_blank" rel="noreferrer noopener" aria-label=" (opens in a new tab)">integration tests</a>&nbsp;to go beyond isolated unit tests, to ensure that multiple components of your application are working correctly.&nbsp;This includes databases and file systems.</li><li><strong>UI Tests</strong>: test your UI components using a tool such as Selenium&nbsp;<a rel="noreferrer noopener" href="https://www.seleniumhq.org/docs/03_webdriver.jsp#chapter03-reference" target="_blank">WebDriver</a>&nbsp;or&nbsp;<a rel="noreferrer noopener" href="https://www.seleniumhq.org/selenium-ide/" target="_blank">IDE</a>&nbsp;in the language of your choice, e.g. C#. For browser support, you may use Chrome or Firefox extensions, so this includes the new&nbsp;<a rel="noreferrer noopener" href="https://www.microsoftedgeinsider.com/en-us/download" target="_blank">Chromium-based Edge browser</a>.</li></ul>
-
-
-
-<p>While this article only goes into the shared library, the same concepts carry over into the testing of each individual web app project (MVC, Razor Pages and Blazor). Refer to the following documentation and blog content for each:</p>
-
-
-
-<ul><li>MVC unit tests in ASP .NET Core:  <a href="https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/testing?view=aspnetcore-3.1">https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/testing?view=aspnetcore-3.1</a> </li><li>Razor Pages unit tests in ASP.NET Core:&nbsp;<a rel="noreferrer noopener" aria-label=" (opens in a new tab)" href="https://docs.microsoft.com/en-us/aspnet/core/test/razor-pages-tests" target="_blank">https://docs.microsoft.com/en-us/aspnet/core/test/razor-pages-tests</a></li><li>Blazor unit tests with bUnit (Preview):  <a href="https://www.telerik.com/blogs/unit-testing-blazor-components-bunit-justmock">https://www.telerik.com/blogs/unit-testing-blazor-components-bunit-justmock</a> </li></ul>
-
-
-
-<p>Refer to the NetLearner sample code for unit tests for each web project:</p>
-
-
-
-<ul><li>MVC Controller:  <a href="https://github.com/shahedc/NetLearnerApp/blob/master/src/NetLearner.Mvc.Tests/ResourceListsControllerTests.cs">https://github.com/shahedc/NetLearnerApp/blob/master/src/NetLearner.Mvc.Tests/ResourceListsControllerTests.cs</a> </li><li> Razor Pages:  <a href="https://github.com/shahedc/NetLearnerApp/blob/master/src/NetLearner.Pages.Tests/ResourceListPageTests.cs">https://github.com/shahedc/NetLearnerApp/blob/master/src/NetLearner.Pages.Tests/ResourceListPageTests.cs</a> </li><li>Blazor:  <a href="https://github.com/shahedc/NetLearnerApp/blob/master/src/NetLearner.Blazor.Tests/BlazorTest.cs">https://github.com/shahedc/NetLearnerApp/blob/master/src/NetLearner.Blazor.Tests/BlazorTest.cs</a> </li></ul>
-
-
-
-<p>In order to set up a shared service object to be used by the controller/page/component being tested, Moq is used to mock the service. For more information on Moq, check out their official documentation on GitHub:</p>
-
-
-
-<ul><li>Moq on GitHub:  <a href="https://github.com/Moq/moq4/wiki/Quickstart">https://github.com/Moq/moq4/wiki/Quickstart</a> </li></ul>
-
-
-
-<p>For the Blazor testing project, the following references were consulted:</p>
-
-
-
-<ul><li>Telerik Blazor Testing Guide (using bUnit beta 6):  <a href="https://www.telerik.com/blogs/unit-testing-blazor-components-bunit-justmock">https://www.telerik.com/blogs/unit-testing-blazor-components-bunit-justmock</a> </li><li>bUnit on GitHub (currently at beta 7):  <a href="https://github.com/egil/bunit">https://github.com/egil/bunit</a> </li></ul>
-
-
-
-<p><strong>NOTE</strong>: Due to differences between bUnit beta 6 and 7, there are some differences between the Blazor guide and the NetLearner tests on Blazor. I started off with the Blazor guide, but made some notable changes.</p>
-
-
-
-<ol><li>Instead of starting with a Razor Class Library template for the test project, I started with the xUnit Test Project template.</li><li>There was no need to change the test project&#8217;s target framework from .NET Standard to .NET Core 3.1 manually, since the test project template was already Core 3.1 when created.</li><li>As per the bUnit guidelines, the test class should no longer be derived from the <a href="https://github.com/egil/bunit/blob/6c66cc2c77bc8c25e7a2871de9517c2fbe6869dd/src/bunit.web/ComponentTestFixture.cs">ComponentTestFixture</a> class, which is now obsolete:  <a href="https://github.com/egil/bunit/blob/6c66cc2c77bc8c25e7a2871de9517c2fbe6869dd/src/bunit.web/ComponentTestFixture.cs">https://github.com/egil/bunit/blob/6c66cc2c77bc8c25e7a2871de9517c2fbe6869dd/src/bunit.web/ComponentTestFixture.cs</a> </li><li>Instead, the test class is now derived from the <a href="https://github.com/egil/bunit/blob/6c66cc2c77bc8c25e7a2871de9517c2fbe6869dd/src/bunit.web/TestContext.cs">TestContext</a> class, as seen in the bUnit source code:  <a href="https://github.com/egil/bunit/blob/6c66cc2c77bc8c25e7a2871de9517c2fbe6869dd/src/bunit.web/TestContext.cs">https://github.com/egil/bunit/blob/6c66cc2c77bc8c25e7a2871de9517c2fbe6869dd/src/bunit.web/TestContext.cs</a> </li></ol>
+<p>By combining many/all of the above features, tips and tricks for your Web App deployments, you can&nbsp;release new features while minimizing/eliminating downtime. If you have any new suggestions, feel free to leave your comments.</p>
 
 
 
@@ -387,7 +201,7 @@
 
 
 
-<ul><li>Getting started: .NET Core with command line &gt; xUnit.net:&nbsp;<a rel="noreferrer noopener" href="https://xunit.net/docs/getting-started/netcore/cmdline" target="_blank">https://xunit.net/docs/getting-started/netcore/cmdline</a></li><li>Running Tests in Parallel &gt; xUnit.net:&nbsp;<a rel="noreferrer noopener" href="https://xunit.net/docs/running-tests-in-parallel" target="_blank">https://xunit.net/docs/running-tests-in-parallel</a></li><li>Unit testing C# code in .NET Core using dotnet test and xUnit:&nbsp;<a href="https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-dotnet-test">https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-dotnet-test</a></li><li>Test controller logic in ASP.NET Core:&nbsp;<a href="https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/testing">https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/testing</a></li><li>Integration tests in ASP.NET Core:&nbsp;<a href="https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests">https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests</a></li><li>Razor Pages unit tests in ASP.NET Core:&nbsp;<a href="https://docs.microsoft.com/en-us/aspnet/core/test/razor-pages-tests">https://docs.microsoft.com/en-us/aspnet/core/test/razor-pages-tests</a></li><li>Unit testing in .NET Core and .NET Standard – .NET Core:&nbsp;<a href="https://docs.microsoft.com/en-us/dotnet/core/testing/">https://docs.microsoft.com/en-us/dotnet/core/testing/</a></li><li>Integration tests with default Web Application Factory:  <a href="https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-3.1#basic-tests-with-the-default-webapplicationfactory">https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-3.1#basic-tests-with-the-default-webapplicationfactory</a> </li><li>Introducing the .NET Core Unit Testing Framework (or: Why xUnit?):&nbsp;<a href="https://visualstudiomagazine.com/articles/2018/11/01/net-core-testing.aspx?m=1">https://visualstudiomagazine.com/articles/2018/11/01/net-core-testing.aspx?m=1</a></li><li>Writing xUnit Tests in .NET Core:&nbsp;<a href="https://visualstudiomagazine.com/articles/2018/11/01/xunit-tests-in-net-core.aspx">https://visualstudiomagazine.com/articles/2018/11/01/xunit-tests-in-net-core.aspx</a></li><li>Live Unit Testing – Visual Studio:&nbsp;<a href="https://docs.microsoft.com/en-us/visualstudio/test/live-unit-testing">https://docs.microsoft.com/en-us/visualstudio/test/live-unit-testing</a></li><li>Mocks Aren’t Stubs:&nbsp;<a rel="noreferrer noopener" href="https://martinfowler.com/articles/mocksArentStubs.html" target="_blank">https://martinfowler.com/articles/mocksArentStubs.html</a></li><li>Mocking in .NET Core Tests with Moq:&nbsp;<a rel="noreferrer noopener" href="http://dontcodetired.com/blog/post/Mocking-in-NET-Core-Tests-with-Moq" target="_blank">http://dontcodetired.com/blog/post/Mocking-in-NET-Core-Tests-with-Moq</a></li><li>Moq – Unit Test In .NET Core App Using Mock Object:&nbsp;<a rel="noreferrer noopener" href="https://www.c-sharpcorner.com/article/moq-unit-test-net-core-app-using-mock-object/" target="_blank">https://www.c-sharpcorner.com/article/moq-unit-test-net-core-app-using-mock-object/</a></li><li>Fake Data with Bogus:  <a href="https://github.com/bchavez/Bogus">https://github.com/bchavez/Bogus</a> </li></ul>
+<ul><li> Highly available multi-region web application:&nbsp;<a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/multi-region" target="_blank">https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/multi-region</a></li><li> Design reliable Azure applications:&nbsp;<a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/azure/architecture/reliability/" target="_blank">https://docs.microsoft.com/en-us/azure/architecture/reliability/</a></li><li> Manage the availability of Windows VMs in Azure: <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/manage-availability" target="_blank">https://docs.microsoft.com/en-us/azure/virtual-machines/windows/manage-availability</a></li><li> What is Azure Load Balancer? <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview" target="_blank">https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview</a></li><li> SLA for VMs:&nbsp;<a rel="noreferrer noopener" href="https://azure.microsoft.com/en-us/support/legal/sla/virtual-machines/" target="_blank">https://azure.microsoft.com/en-us/support/legal/sla/virtual-machines/</a></li><li> Back up app &#8211; Azure App Service:&nbsp;<a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/azure/app-service/manage-backup" target="_blank">https://docs.microsoft.com/en-us/azure/app-service/manage-backup</a></li><li> Azure CLI Script Sample &#8211; Back up an app:&nbsp;<a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/azure/app-service/scripts/cli-backup-onetime" target="_blank">https://docs.microsoft.com/en-us/azure/app-service/scripts/cli-backup-onetime</a></li><li> CI/CD with Release pipelines: <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/azure/devops/pipelines/release" target="_blank">https://docs.microsoft.com/en-us/azure/devops/pipelines/release</a></li><li> Continuous deployment &#8211; Azure App Service: <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/azure/app-service/deploy-continuous-deployment" target="_blank">https://docs.microsoft.com/en-us/azure/app-service/deploy-continuous-deployment</a></li><li> Set up staging environments for web apps in Azure App Service: <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/azure/app-service/deploy-staging-slots" target="_blank">https://docs.microsoft.com/en-us/azure/app-service/deploy-staging-slots</a></li><li> Handling Entity Framework Core database migrations in production:&nbsp;<a rel="noreferrer noopener" href="https://www.thereformedprogrammer.net/handling-entity-framework-core-database-migrations-in-production-part-1/" target="_blank">https://www.thereformedprogrammer.net/handling-entity-framework-core-database-migrations-in-production-part-1/</a></li><li> Handling Entity Framework Core database migrations in production – Part 2:&nbsp;<a rel="noreferrer noopener" href="https://www.thereformedprogrammer.net/handling-entity-framework-core-database-migrations-in-production-part-2/" target="_blank">https://www.thereformedprogrammer.net/handling-entity-framework-core-database-migrations-in-production-part-2/</a></li><li> Tutorial for using feature flags in a .NET Core app: <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/azure/azure-app-configuration/use-feature-flags-dotnet-core" target="_blank">https://docs.microsoft.com/en-us/azure/azure-app-configuration/use-feature-flags-dotnet-core</a></li><li> Quickstart for adding feature flags to ASP.NET Core:&nbsp;<a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/azure/azure-app-configuration/quickstart-feature-flag-aspnet-core" target="_blank">https://docs.microsoft.com/en-us/azure/azure-app-configuration/quickstart-feature-flag-aspnet-core</a> </li></ul>
 					</div><!-- .entry-content -->
 		
 		<!-- .entry-meta -->

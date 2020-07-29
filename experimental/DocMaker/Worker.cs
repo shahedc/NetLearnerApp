@@ -48,9 +48,9 @@ namespace DocMaker
                 "https://wakeupandcode.com/unit-testing-in-asp-net-core-3-1",
                 "https://wakeupandcode.com/validation-in-asp-net-core-3-1",
                 "https://wakeupandcode.com/worker-service-in-net-core-3-1",
-                "https://wakeupandcode.com/xml-json-serialization-in-asp-net-core-3-1",
+                "https://wakeupandcode.com/xml-+-json-output-for-web-apis-in-asp-net-core-3-1",
 
-                "https://wakeupandcode.com/yaml-defined-cicd-for-asp-net-core-3-1",
+                "https://wakeupandcode.com/yaml-defined-ci-cd-for-asp-net-core-3-1",
                 "https://wakeupandcode.com/zero-downtime-web-apps-for-asp-net-core-3-1"
             };
 
