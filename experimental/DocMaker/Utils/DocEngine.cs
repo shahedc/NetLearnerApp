@@ -60,19 +60,24 @@ namespace DocMaker.Utils
         {
             // look for <pre> tags which contain code snippets 
             var preNodes = htmlDoc.DocumentNode.SelectNodes("//pre");
-            foreach (HtmlNode htmlPreNode in preNodes)
-            {
-                // replace doc's \n newlines with HTML breaks
-                // ... as Environment.NewLine doesn't seem to work (?)
-                var replacedText = htmlPreNode.InnerText
-                    .Replace("\n", "<br />");
-                
-                var TextWithFormatting = "<span style=\"color: #808080;font-family: Courier New;\">"
-                    + replacedText + "</span>";
 
-                htmlPreNode.ParentNode.ReplaceChild(
-                    HtmlTextNode.CreateNode(
-                        TextWithFormatting), htmlPreNode);
+            if (preNodes != null)
+            {
+                foreach (HtmlNode htmlPreNode in preNodes)
+                {
+                    // replace doc's \n newlines with HTML breaks
+                    // ... as Environment.NewLine doesn't seem to work (?)
+                    var replacedText = htmlPreNode.InnerText
+                        .Replace("\n", "<br />");
+
+                    var TextWithFormatting = "<span style=\"color: #808080;font-family: Courier New;\">"
+                        + replacedText + "</span>";
+
+                    htmlPreNode.ParentNode.ReplaceChild(
+                        HtmlTextNode.CreateNode(
+                            TextWithFormatting), htmlPreNode);
+                }
+
             }
 
             HtmlNode htmlNode = htmlDoc.DocumentNode.SelectSingleNode("//*[@id=\"content\"]");

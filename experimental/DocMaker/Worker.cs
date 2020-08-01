@@ -22,6 +22,13 @@ namespace DocMaker
         {
             // string array of URLs *without* any trailing slash
             string[] articleUrls = {
+                // prelude
+
+                //"https://wakeupandcode.com/asp-net-core-code-sharing-between-blazor-mvc-and-razor-pages",
+                //"https://wakeupandcode.com/hello-asp-net-core-v3-1",
+                //"https://wakeupandcode.com/netlearner-on-asp-net-core-3-1",
+
+                // A-Z chapters
                 "https://wakeupandcode.com/authentication-authorization-in-asp-net-core-3-1",
                 "https://wakeupandcode.com/blazor-full-stack-web-dev-in-asp-net-core-3-1",
                 "https://wakeupandcode.com/cookies-and-consent-in-asp-net-core-3-1",
