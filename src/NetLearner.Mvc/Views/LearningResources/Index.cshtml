@@ -1,7 +1,19 @@
 ﻿@model IEnumerable<NetLearner.SharedLib.Models.LearningResource>
-
+@using System.Web
 @{
+
     ViewData["Title"] = "Learning Resources";
+
+    bool isVideo(string fullUrl)
+    {
+        if (fullUrl.Contains("youtube.com") || (fullUrl.Contains("youtu.be")))
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+
 }
 
 <h1>Learning Resources</h1>
@@ -31,21 +43,25 @@
     <tbody>
         @foreach (var item in Model)
         {
+            string videoUrl = item.Url.Replace("/watch?v=", "/embed/");
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
                     <a id="videolink_@item.Id" 
-                       onclick="launchModal('@item.Id')"
                        href="@item.Url"
                        title="@item.Url">
                         Link
                     </a>
 
                     <!-- Trigger/Open The Modal -->
-                    <button id="myBtn_@item.Id" onclick="launchModal('@item.Id')">Open Modal</button>
-
+                    @if (isVideo(item.Url))
+                    {
+                        <button
+                            id="myBtn_@item.Id"
+                            onclick="launchModal('@item.Id', '@videoUrl')">Watch</button>
+                    }
                     <!-- The Modal -->
                     <div id="myModal_@item.Id" class="modal">
 
@@ -84,16 +100,16 @@
 </table>
 
 @{
-   
+  
 }
 
 @section Scripts {
 
 <script>
 
-    function launchModal(itemId) {
-        var videoFrame = '<iframe width="560" height="315" src="https://www.youtube.com/embed/BM4CHBmAPh4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-
+    function launchModal(itemId, itemUrl) {
+        videoFrame = '<iframe width="560" height="315" src="' + (itemUrl) + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+    
         var videoPara = document.getElementById("video_" + itemId);
         videoPara.innerHTML = videoFrame;
 
