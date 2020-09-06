@@ -53,9 +53,9 @@
                         <div class="modal-content">
                             <span class="close" id="close_@item.Id" 
                                   onclick="closeModal('@item.Id')">&times;</span>
-                            <p>
+                            <p id="video_@item.Id">
                                 Video for @item.Url
-                                @*<iframe width="560" height="315" src="https://www.youtube.com/embed/BM4CHBmAPh4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>*@
+                                @**@
                             </p>
                         </div>
 
@@ -92,6 +92,11 @@
 <script>
 
     function launchModal(itemId) {
+        var videoFrame = '<iframe width="560" height="315" src="https://www.youtube.com/embed/BM4CHBmAPh4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+
+        var videoPara = document.getElementById("video_" + itemId);
+        videoPara.innerHTML = videoFrame;
+
         var modal = document.getElementById("myModal_" + itemId);
         modal.style.display = "block";
     }
@@ -99,6 +104,9 @@
     function closeModal(itemId) {
         var modal = document.getElementById("myModal_" + itemId);
         modal.style.display = "none";
+
+        var videoPara = document.getElementById("video_" + itemId);
+        videoPara.innerHTML = "";
     }
 </script>
 }
