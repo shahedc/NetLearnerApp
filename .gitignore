@@ -352,3 +352,4 @@ MigrationBackup/
 /src/NetLearner.Mvc/Properties/ServiceDependencies/nlmvc - Web Deploy/profile.arm.json
 /src/NetLearner.Portal/Properties/ServiceDependencies/netlearner - Web Deploy/profile.arm.json
 /src/NetLearner.Pages/Properties/ServiceDependencies/nlpages - Web Deploy/profile.arm.json
+/src/NetLearner.Blazor/Properties/ServiceDependencies/nlblazor - Web Deploy/profile.arm.json

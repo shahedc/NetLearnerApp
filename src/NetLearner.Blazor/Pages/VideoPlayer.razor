@@ -1,0 +1,36 @@
+﻿<div class="blazor-modal @cssClass">
+    <div class="blazor-modal-content">
+        <div class="blazor-modal-header">
+            <h5 class="blazor-modal-title">@Title</h5>
+            <span class="blazor-modal-close-button" @onclick="() => IsOpened = false">X</span>
+        </div>
+        <div class="blazor-modal-body">
+            <p>
+                <iframe width="560" height="315" src="@VideoUrl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </p>
+        </div>
+        <div class="blazor-modal-footer">
+            @ModalFooter
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string VideoUrl { get; set; }
+
+    [Parameter]
+    public RenderFragment ModalBody { get; set; }
+
+    [Parameter]
+    public RenderFragment ModalFooter { get; set; }
+
+    [Parameter]
+    public bool IsOpened { get; set; }
+
+    string cssClass => IsOpened ? "show" : "hide";
+}
