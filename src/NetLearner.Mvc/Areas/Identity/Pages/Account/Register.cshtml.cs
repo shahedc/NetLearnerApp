@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 
 namespace NetLearner.Mvc.Areas.Identity.Pages.Account
 {
-    [Authorize] //[AllowAnonymous]
+    [AllowAnonymous]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
