@@ -29,7 +29,7 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Url)
+                Preview
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ResourceList)
@@ -43,28 +43,35 @@
             string videoUrl = item.Url.Replace("/watch?v=", "/embed/");
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    <a id="videolink_@item.Id" 
+                    <a id="videolink_@item.Id"
                        href="@item.Url"
                        title="@item.Url">
-                        Link
+                        @Html.DisplayFor(modelItem => item.Name)
                     </a>
-
+                </td>
+                <td>
                     <!-- Trigger/Open The Modal -->
                     @if (isVideo(item.Url))
                     {
-                        <button
-                            id="myBtn_@item.Id"
-                            onclick="launchModal('@item.Id', '@videoUrl')">Watch</button>
+                        <button id="myBtn_@item.Id"
+                                onclick="launchModal('@item.Id', '@videoUrl')">
+                            Watch
+                        </button>
+                    }
+                    else
+                    {
+                        <a id="videolink_@item.Id"
+                           href="@item.Url"
+                           title="@item.Url">
+                            Link
+                        </a>
                     }
                     <!-- The Modal -->
                     <div id="myModal_@item.Id" class="modal">
 
                         <!-- Modal content -->
                         <div class="modal-content">
-                            <span class="close" id="close_@item.Id" 
+                            <span class="close" id="close_@item.Id"
                                   onclick="closeModal('@item.Id')">&times;</span>
                             <p id="video_@item.Id">
                                 Video for @item.Url

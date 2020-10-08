@@ -28,7 +28,7 @@
                 @Html.DisplayNameFor(model => model.LearningResource[0].Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LearningResource[0].Url)
+                Preview
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.LearningResource[0].ResourceList)
@@ -41,14 +41,13 @@
             string videoUrl = item.Url.Replace("/watch?v=", "/embed/");
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
                     <a id="videolink_@item.Id"
                        href="@item.Url"
                        title="@item.Url">
-                        Link
+                        @Html.DisplayFor(modelItem => item.Name)
                     </a>
+                </td>
+                <td>
 
                     <!-- Trigger/Open The Modal -->
                     @if (isVideo(item.Url))
@@ -57,6 +56,14 @@
                                 onclick="launchModal('@item.Id', '@videoUrl')">
                             Watch
                         </button>
+                    }
+                    else
+                    {
+                        <a id="videolink_@item.Id"
+                           href="@item.Url"
+                           title="@item.Url">
+                            Link
+                        </a>
                     }
                     <!-- The Modal -->
                     <div id="myModal_@item.Id" class="modal">

@@ -31,7 +31,7 @@ else
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Url</th>
+                <th>Preview</th>
                 <th>List</th>
                 <th>Edit</th>
                 <th>Delete</th>
@@ -41,12 +41,17 @@ else
             @foreach (var learningResource in learningResources)
             {
                 <tr>
-                    <td>@learningResource.Name</td>
                     <td>
-                        <a href="@learningResource.Url">Link</a>
+                        <a title="@learningResource.Url"  href="@learningResource.Url">@learningResource.Name</a>
+                    </td>
+                    <td>
                         @if (isVideo(learningResource.Url))
                         {
-                            <button class="btn btn-primary" @onclick="(() => OpenModal(learningResource.Url))">Show Video</button>
+                            <button class="btn btn-primary" @onclick="(() => OpenModal(learningResource.Url))">Watch</button>
+                        }
+                        else
+                        {
+                    <a title="@learningResource.Url" href="@learningResource.Url">Link</a>
                         }
 
                     </td>
