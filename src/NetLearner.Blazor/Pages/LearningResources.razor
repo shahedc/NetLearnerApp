@@ -33,7 +33,6 @@ else
                 <th>Name</th>
                 <th>Url</th>
                 <th>List</th>
-                <th>Feed</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
@@ -53,9 +52,6 @@ else
                     </td>
                     <td>
                         <a href="javascript:void()" @onclick="(() => ShowItemsForList(learningResource.ResourceListId))"> @learningResource.ResourceList.Name</a>
-                    </td>
-                    <td>
-                        <a href="@learningResource.ContentFeedUrl">RSS</a>
                     </td>
                     <td>
                         <AuthorizeView>

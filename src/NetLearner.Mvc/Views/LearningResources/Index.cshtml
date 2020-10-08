@@ -34,9 +34,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.ResourceList)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ContentFeedUrl)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -81,12 +78,6 @@
                 <td>
                     <a href="/LearningResources/GetForList?Id=@item.ResourceListId">
                         @Html.DisplayFor(modelItem => item.ResourceList.Name)
-                    </a>
-                </td>
-                <td>
-                    <a href="@item.ContentFeedUrl"
-                       title="@item.ContentFeedUrl">
-                        RSS
                     </a>
                 </td>
                 <td>
