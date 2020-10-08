@@ -1,6 +1,14 @@
+
+Live Instance : 
+[Portal](https://netlearner.org/) | 
+[MVC Demo](https://nlmvc.azurewebsites.net/) | 
+[Razor Pages Demo](https://nlpages.azurewebsites.net/) | 
+[Blazor Demo](https://nlblazor.azurewebsites.net/)
+
 # NetLearnerApp
 NetLearner: The Internet Resource Learning Helper built with ASP .NET Core
 ![NetLearner Logo](/design/logos/NetLearner-logo.png "NetLearner Logo")
+
 
 NetLearner is an ASP .NET Core web app to allow any user to consolidate multiple learning resources all under one umbrella. The codebase itself is a way for new/existing .NET developers to learn ASP .NET Core, while a deployed instance of NetLearner can be used as a curated link-sharing web application. 
 
