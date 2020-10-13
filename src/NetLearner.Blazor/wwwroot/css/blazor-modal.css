@@ -55,8 +55,8 @@
 }
 
 .blazor-modal-close-button {
-    float: right;
-    margin: 5px;
+    float: left;
+    margin: 2px;
     cursor: pointer;
 }
 

@@ -87,11 +87,15 @@ else
 </ResourceDetail>
 
 <VideoPlayer Title="Video Player" IsOpened="isOpened" VideoUrl="@videoUrl">
+    <ModalX>
+        <span class="blazor-modal-close-button"
+              @onclick="CloseModal">[X] Close Popup</span>
+    </ModalX>
     <ModalBody>
         <p>Video</p>
     </ModalBody>
     <ModalFooter>
-        <button class="btn btn-primary" @onclick="CloseModal">Close Modal</button>
+        &nbsp;
     </ModalFooter>
 </VideoPlayer>
 

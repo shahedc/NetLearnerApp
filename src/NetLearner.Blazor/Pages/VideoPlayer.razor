@@ -1,7 +1,7 @@
 ﻿<div class="blazor-modal @cssClass">
     <div class="blazor-modal-content">
         <div class="blazor-modal-header">
-            <h5 class="blazor-modal-title">@Title</h5>
+            <h5 class="blazor-modal-title">@ModalX</h5>
         </div>
         <div class="blazor-modal-body">
             <p>
@@ -23,6 +23,9 @@
     public string VideoUrl { get; set; }
 
     [Parameter]
+    public RenderFragment ModalX { get; set; }
+
+    [Parameter]
     public RenderFragment ModalBody { get; set; }
 
     [Parameter]
@@ -32,4 +35,5 @@
     public bool IsOpened { get; set; }
 
     string cssClass => IsOpened ? "show" : "hide";
+
 }
